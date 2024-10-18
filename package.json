@@ -7,7 +7,7 @@
     "license": "MIT",
     "scripts": {
         "unit": "jest --coverage",
-        "lint": "eslint './src/**/*.ts' --quiet --fix",
+        "lint": "eslint './app/**/*.ts' --quiet --fix",
         "compile": "tsc",
         "test": "npm run compile && npm run unit"
     },

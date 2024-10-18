@@ -1,8 +1,8 @@
-import type { LambdaInterface } from '@aws-lambda-powertools/commons/types';
-import tracer from '../../libraries/tracer';
+import LambdaHandlerInterface from '../../libraries/lambda-handler-interface';
 import LambdaLogger, { logger } from '../../libraries/logger';
+import tracer from '../../libraries/tracer';
 
-class Lambda implements LambdaInterface {
+class Lambda implements LambdaHandlerInterface {
     @tracer.captureLambdaHandler()
     // In logger the { logEvent: true } is disabled by default to prevent sensitive info being logged
     @logger.injectLambdaContext({ logEvent: false })
