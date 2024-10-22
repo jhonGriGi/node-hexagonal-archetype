@@ -4,36 +4,25 @@ import Product from '../domain/model/product';
 import ProductRepository from '../domain/ports/product-repository';
 
 export class SqlDriverRepository implements ProductRepository {
-    queryParser(model: object) {
-        let queryString = '';
-        const queryItems = [];
-        const parameters = Object.keys(model);
-        for (const item in parameters) {
-            queryString += '?';
-            queryItems.push(parameters[item]);
-        }
-
-        return {
-            queryString,
-            queryItems,
-        };
-    }
-
     async add(product: Product): Promise<void> {
         const conn = await mysql.createConnection({ database: 'Test' });
-        const { queryString, queryItems } = this.queryParser(product);
-        const query = `INSERT INTO products VALUES ${queryString}`;
+        const query = `INSERT INTO products VALUES (?, ?, ?, ?, ?)`;
 
-        await conn.execute(query, queryItems);
+        await conn.execute(query, [
+            product.id,
+            product.name,
+            product.description,
+            product.createDate,
+            product.lastUpdateDate,
+        ]);
         await conn.end();
     }
 
     async updateAttributes(product: Product): Promise<void> {
         const conn = await mysql.createConnection({ database: 'Test' });
-        const { queryItems } = this.queryParser(product);
-        const query = `UPDATE products SET id = ?, name = ? WHERE product.id = ?`;
+        const query = `UPDATE products SET name = ?, description = ?, lastUpdateDate = ? WHERE product.id = ?`;
 
-        await conn.execute(query, queryItems);
+        await conn.execute(query, [product.name, product.description, product.lastUpdateDate, product.id]);
         await conn.end();
     }
 

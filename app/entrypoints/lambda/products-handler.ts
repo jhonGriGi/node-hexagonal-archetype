@@ -2,9 +2,9 @@ import LambdaHandlerInterface, { LambdaApiResponse } from '../../libraries/lambd
 import LambdaLogger, { logger } from '../../libraries/logger';
 import tracer from '../../libraries/tracer';
 
+// TODO: Add api models, lambda handlers methods and middlewares?
 class Lambda implements LambdaHandlerInterface {
     @tracer.captureLambdaHandler()
-    // In logger the { logEvent: true } is disabled by default to prevent sensitive info being logged
     @logger.injectLambdaContext({ logEvent: false })
     public async handler(_event: unknown, _context: unknown): Promise<LambdaApiResponse> {
         LambdaLogger.info('this is an example of static logger', {

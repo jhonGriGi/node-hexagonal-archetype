@@ -2,7 +2,7 @@ interface Product {
     id: string;
     name: string;
     description?: string;
-    createDate: string;
+    createDate?: string;
     lastUpdateDate: string;
 }
 
