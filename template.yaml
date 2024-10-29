@@ -24,6 +24,7 @@ Resources:
             Environment:
                 Variables:
                     POWERTOOLS_SERVICE_NAME: serverlessAirline
+                    POWERTOOLS_METRICS_NAMESPACE: serverlessAirline
             Architectures:
                 - x86_64
             Events:

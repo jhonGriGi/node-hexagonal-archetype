@@ -1,12 +1,13 @@
 # node-hexagonal-architecture-archetype
 
-## Tracing and Logger
+## Metrics, Tracing and Logger
 
-to add tracing and logger for your project you can follow the example of product handlers in `app/entrypoints/lambda/products-handler.ts`, but you must change the service name in the follow files:
+to add metrics, tracing and logger for your project you can follow the example of product handlers in `app/entrypoints/lambda/products-handler.ts`, but you must change the service name in the follow files:
 
 -   template.yaml -> this file is in the root folder
--   tracer.ts -> this files is in the next route: `app/libraries/tracer.ts`
--   logger.ts -> this files is in the next route: `app/libraries/logger.ts`
+-   tracer.ts -> this file is in the next route: `app/libraries/tracer.ts`
+-   logger.ts -> this file is in the next route: `app/libraries/logger.ts`
+-   metrics.ts -> this file is in the next route: `app/libraries/metrics.ts`
 
 after those change you can add this decorators to your handler method
 
@@ -15,6 +16,8 @@ after those change you can add this decorators to your handler method
 // In logger the { logEvent: true } is disabled by default to prevent sensitive info being logged
 @logger.injectLambdaContext({ logEvent: false })
 ```
+
+[Visit the official AWS Powertools documentation with TypeScript](https://docs.powertools.aws.dev/lambda/typescript/latest/)
 
 ## Handler
 
