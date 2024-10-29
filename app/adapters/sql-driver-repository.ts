@@ -1,46 +1,60 @@
-import mysql from 'mysql2/promise';
-import { FIRST_POSITION } from '../domain/constants/constants';
 import Product from '../domain/model/product';
 import ProductRepository from '../domain/ports/product-repository';
+import { FIRST_POSITION } from '../domain/constants/constants';
+import { DatabaseConfig } from './internals/database-config';
 
 export class SqlDriverRepository implements ProductRepository {
-    async add(product: Product): Promise<void> {
-        const conn = await mysql.createConnection({ database: 'Test' });
-        const query = `INSERT INTO products VALUES (?, ?, ?, ?, ?)`;
+    private dbConfig: DatabaseConfig;
 
-        await conn.execute(query, [
+    constructor(dbConfig: DatabaseConfig) {
+        this.dbConfig = dbConfig;
+    }
+
+    public async add(product: Product): Promise<void> {
+        await this.dbConfig.connect();
+        const connection = this.dbConfig.getConnection();
+
+        const query = `INSERT INTO products VALUES (?, ?, ?, ?, ?)`;
+        await connection.execute(query, [
             product.id,
             product.name,
             product.description,
             product.createDate,
             product.lastUpdateDate,
         ]);
-        await conn.end();
+
+        await this.dbConfig.disconnect();
     }
 
-    async updateAttributes(product: Product): Promise<void> {
-        const conn = await mysql.createConnection({ database: 'Test' });
+    public async updateAttributes(product: Product): Promise<void> {
+        await this.dbConfig.connect();
+        const connection = this.dbConfig.getConnection();
+
         const query = `UPDATE products SET name = ?, description = ?, lastUpdateDate = ? WHERE product.id = ?`;
+        await connection.execute(query, [product.name, product.description, product.lastUpdateDate, product.id]);
 
-        await conn.execute(query, [product.name, product.description, product.lastUpdateDate, product.id]);
-        await conn.end();
+        await this.dbConfig.disconnect();
     }
 
-    async get(productId: string): Promise<Product | null> {
-        const conn = await mysql.createConnection({ database: 'Test' });
-        const query = `SELECT * FROM products WHERE product.id = ?`;
+    public async get(productId: string): Promise<Product | null> {
+        await this.dbConfig.connect();
+        const connection = this.dbConfig.getConnection();
 
-        const queryResponse = await conn.execute(query, productId);
-        await conn.end();
+        const query = `SELECT * FROM products WHERE product.id = ?`;
+        const queryResponse = await connection.execute(query, [productId]);
+
+        await this.dbConfig.disconnect();
 
         return queryResponse[FIRST_POSITION] as unknown as Product;
     }
 
-    async delete(productId: string): Promise<void> {
-        const conn = await mysql.createConnection({ database: 'Test' });
-        const query = `DELETE FROM products WHERE productId = ?`;
+    public async delete(productId: string): Promise<void> {
+        await this.dbConfig.connect();
+        const connection = this.dbConfig.getConnection();
 
-        await conn.execute(query, productId);
-        await conn.end();
+        const query = `DELETE FROM products WHERE productId = ?`;
+        await connection.execute(query, [productId]);
+
+        await this.dbConfig.disconnect();
     }
 }
