@@ -11,6 +11,7 @@
         "skipLibCheck": true,
         "forceConsistentCasingInFileNames": true,
         "experimentalDecorators": true
+        
     },
     "exclude": ["node_modules"],
     "include": ["app/**/*.ts", "**/*.test.ts"]
