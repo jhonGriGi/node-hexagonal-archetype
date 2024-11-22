@@ -1,8 +1,8 @@
 import { MetricUnit } from '@aws-lambda-powertools/metrics';
-import LambdaHandlerInterface, { LambdaApiResponse } from '../../libraries/lambda-handler-interface';
-import LambdaLogger, { logger } from '../../libraries/logger';
-import tracer from '../../libraries/tracer';
-import metrics from '../../libraries/metrics';
+import LambdaHandlerInterface, { LambdaApiResponse } from '@libraries/lambda-handler-interface';
+import LambdaLogger, { logger } from '@libraries/logger';
+import tracer from '@libraries/tracer';
+import metrics from '@libraries/metrics';
 
 // TODO: Add api models, lambda handlers methods and middlewares?
 class Lambda implements LambdaHandlerInterface {

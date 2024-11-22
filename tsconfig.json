@@ -10,7 +10,17 @@
         "esModuleInterop": true,
         "skipLibCheck": true,
         "forceConsistentCasingInFileNames": true,
-        "experimentalDecorators": true
+        "experimentalDecorators": true,
+        "baseUrl": "./",
+        "paths": {
+            "@domain/*": ["app/domain/*"],
+            "@adapters/*": ["app/adapters/*"],
+            "@lambda/*": ["app/entrypoints/lambda/*"],
+            "@schemas/*": ["app/entrypoints/schemas/*"],
+            "@libraries/*": ["app/libraries/*"],
+            "@ports/*": ["app/domain/ports/*"],
+            "@model/*": ["app/domain/model/*"]
+        }
     },
     "exclude": ["node_modules"],
     "include": ["app/**/*.ts", "**/*.test.ts"]

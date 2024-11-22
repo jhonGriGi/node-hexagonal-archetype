@@ -1,4 +1,4 @@
-import { handlerClass } from '../../lambda/products-handler';
+import { handlerClass } from '@lambda/products-handler';
 
 describe('ProductsHandler test suit', () => {
     it('Should return a hello world in response with status 200', async () => {
