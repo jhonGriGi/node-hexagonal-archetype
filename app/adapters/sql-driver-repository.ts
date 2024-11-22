@@ -1,7 +1,7 @@
-import Product from '../domain/model/product';
-import ProductRepository from '../domain/ports/product-repository';
-import { FIRST_POSITION } from '../domain/constants/constants';
-import { DatabaseConfig } from './internals/database-config';
+import Product from '@domain/model/product';
+import ProductRepository from '@domain/ports/product-repository';
+import { FIRST_POSITION } from '@domain/constants/constants';
+import { DatabaseConfig } from '@libraries/orm/internals/database-config';
 
 export class SqlDriverRepository implements ProductRepository {
     private dbConfig: DatabaseConfig;
