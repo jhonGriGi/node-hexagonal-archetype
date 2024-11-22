@@ -5,9 +5,4 @@ export const CreateProductCommand = z.object({
     description: z.string().min(1),
 });
 
-// interface CreateProductCommand {
-//     name: string;
-//     description: string;
-// }
-
 export default CreateProductCommand;

@@ -6,10 +6,4 @@ export const UpdateProductCommand = z.object({
     description: z.string().min(1),
 });
 
-// interface UpdateProductCommand {
-//     id: string;
-//     name: string;
-//     description: string;
-// }
-
 export default UpdateProductCommand;
