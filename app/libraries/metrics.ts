@@ -1,8 +1,8 @@
-import { Metrics } from '@aws-lambda-powertools/metrics';
+import { Metrics } from '@aws-lambda-powertools/metrics'
 
 const metrics = new Metrics({
-    namespace: 'serverlessAirline',
-    serviceName: 'products',
-});
+  namespace: 'serverlessAirline',
+  serviceName: 'products'
+})
 
-export default metrics;
+export default metrics

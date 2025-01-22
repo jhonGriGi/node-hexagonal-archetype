@@ -7,7 +7,7 @@
     "license": "MIT",
     "scripts": {
         "unit": "jest --coverage",
-        "lint": "eslint './app/**/*.ts' --quiet --fix",
+        "lint": "ts-standard --fix",
         "compile": "tsc",
         "test": "npm run compile && npm run unit"
     },
@@ -19,6 +19,7 @@
         "esbuild": "^0.14.54",
         "mysql2": "^3.11.3",
         "sequelize": "^6.37.5",
+        "ts-standard": "^12.0.2",
         "uuid": "^10.0.0",
         "zod": "^3.23.8"
     },
@@ -37,5 +38,14 @@
         "ts-jest": "^29.0.5",
         "ts-node": "^10.9.1",
         "typescript": "^4.8.4"
+    },
+    "ts-standard": {
+        "project": "./tsconfig.json",
+        "ignore": [
+            "dist/",
+            "app/**/test/*.ts",
+            "node_modules",
+            "coverage"
+        ]
     }
 }

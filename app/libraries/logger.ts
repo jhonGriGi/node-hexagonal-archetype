@@ -1,11 +1,11 @@
-import { Logger } from '@aws-lambda-powertools/logger';
-import { LogItemExtraInput } from '@aws-lambda-powertools/logger/lib/cjs/types/Logger';
+import { Logger } from '@aws-lambda-powertools/logger'
+import { LogItemExtraInput } from '@aws-lambda-powertools/logger/lib/cjs/types/Logger'
 
-export const logger = new Logger();
+export const logger = new Logger()
 
 class LambdaLogger {
-    /**
-     * 
+  /**
+     *
      * you can use multiple objects for logs like the example below
      *  logger.info(
             'This is a log with 3 extra objects',
@@ -15,12 +15,12 @@ class LambdaLogger {
         );
      *
      */
-    static info(title: string, ...extraInput: LogItemExtraInput) {
-        logger.info(title, ...extraInput);
-    }
+  static info (title: string, ...extraInput: LogItemExtraInput) {
+    logger.info(title, ...extraInput)
+  }
 
-    /**
-     * 
+  /**
+     *
      * you can use multiple objects for logs like the example below
      *  logger.info(
             'This is a log with 3 extra objects',
@@ -30,9 +30,9 @@ class LambdaLogger {
         );
      *
      */
-    static error(title: string, ...extraInput: LogItemExtraInput) {
-        logger.error(title, ...extraInput);
-    }
+  static error (title: string, ...extraInput: LogItemExtraInput) {
+    logger.error(title, ...extraInput)
+  }
 }
 
-export default LambdaLogger;
+export default LambdaLogger

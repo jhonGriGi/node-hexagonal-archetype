@@ -1,5 +1,5 @@
-import { Tracer } from '@aws-lambda-powertools/tracer';
+import { Tracer } from '@aws-lambda-powertools/tracer'
 
-const tracer = new Tracer({ serviceName: 'serverlessAirline ' });
+const tracer = new Tracer({ serviceName: 'serverlessAirline ' })
 
-export default tracer;
+export default tracer
