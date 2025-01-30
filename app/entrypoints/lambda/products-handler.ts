@@ -15,13 +15,15 @@ class Lambda implements LambdaHandlerInterface {
       context: _context
     })
     tracer.getSegment()
+    const response = {
+      statusCode: 200,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ message: "Hello World" }),
+    };
 
-    return {
-      status: 200,
-      body: JSON.stringify({
-        Hello: 'World'
-      })
-    }
+    return response;
   }
 }
 
