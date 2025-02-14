@@ -6,4 +6,4 @@ export const UpdateProductCommand = z.object({
   description: z.string().min(1)
 })
 
-export default UpdateProductCommand
+export type UpdateProductCommand = z.infer<typeof UpdateProductCommand>

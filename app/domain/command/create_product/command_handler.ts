@@ -1,12 +1,13 @@
-import { randomUUID } from 'crypto'
-import CreateProductCommand from './command'
+import { CreateProductCommand } from '@domain/command/create_product/command'
 import Product from '@model/product'
 import ProductRepository from '@ports/product-repository'
+import { randomUUID } from 'crypto'
 
 export class CreateProductCommandHandler {
-  constructor (private readonly repository: ProductRepository) {}
+  constructor (private readonly repository: ProductRepository) {
+  }
 
-  async execute (command: typeof CreateProductCommand): Promise<string> {
+  async execute (command: CreateProductCommand): Promise<string> {
     const currentTime = Date.now().toString()
     const id = randomUUID()
     const parsedCommand = CreateProductCommand.parse(command)

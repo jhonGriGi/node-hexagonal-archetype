@@ -4,4 +4,4 @@ export const DeleteProductCommand = z.object({
   id: z.string().min(1)
 })
 
-export default DeleteProductCommand
+export type DeleteProductCommand = z.infer<typeof DeleteProductCommand>

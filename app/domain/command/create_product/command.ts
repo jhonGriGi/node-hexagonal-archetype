@@ -5,4 +5,4 @@ export const CreateProductCommand = z.object({
   description: z.string().min(1)
 })
 
-export default CreateProductCommand
+export type CreateProductCommand = z.infer<typeof CreateProductCommand>
