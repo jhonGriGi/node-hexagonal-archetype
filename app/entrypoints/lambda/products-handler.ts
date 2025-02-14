@@ -3,7 +3,7 @@ import ApiResponseBuilder, { LambdaApiResponse } from '@domain/Builders/ApiRespo
 import LambdaHandlerInterface from '@libraries/lambda-handler-interface'
 import LambdaLogger, { logger } from '@libraries/logger'
 import { LambdaMetrics } from '@libraries/metrics'
-import tracer from '@libraries/tracer'
+import { LambdaTracer, tracer } from '@libraries/tracer'
 
 class Lambda implements LambdaHandlerInterface {
   @tracer.captureLambdaHandler()
@@ -14,7 +14,7 @@ class Lambda implements LambdaHandlerInterface {
       event: _event,
       context: _context
     })
-    tracer.getSegment()
+    LambdaTracer.getSegment()
 
     return ApiResponseBuilder
       .empty()
