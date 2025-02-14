@@ -19,6 +19,7 @@ class Lambda implements LambdaHandlerInterface {
     return ApiResponseBuilder
       .empty()
       .withStatusCode(200)
+      .withHeaders({ 'Content-Type': 'application/json' })
       .withBody({
         Hello: 'World'
       })
