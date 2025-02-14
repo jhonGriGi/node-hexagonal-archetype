@@ -5,7 +5,7 @@ describe('ProductsHandler test suit', () => {
     const response = await handlerClass.handler('', '')
     const bodyParsed = JSON.parse(response.body ?? '{}')
 
-    expect(response.status).toBe(200)
+    expect(response.statusCode).toBe(200)
     expect(bodyParsed).toEqual({
       Hello: 'World'
     })
