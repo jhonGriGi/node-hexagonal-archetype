@@ -1,23 +1,23 @@
-import Product from "@model/product";
-import ProductRepository from "@ports/product-repository";
-import { UpdateProductCommand } from "./command";
+import Product from '@model/product'
+import ProductRepository from '@ports/product-repository'
+import { UpdateProductCommand } from './command'
 
 export class UpdateProductCommandHandler {
-  constructor(private readonly repository: ProductRepository) {
+  constructor (private readonly repository: ProductRepository) {
   }
 
-  async execute(command: UpdateProductCommand): Promise<string> {
-    const currentTime = Date.now().toString();
-    const parsedCommand = UpdateProductCommand.parse(command);
+  async execute (command: UpdateProductCommand): Promise<string> {
+    const currentTime = Date.now().toString()
+    const parsedCommand = UpdateProductCommand.parse(command)
     const product: Product = {
       id: parsedCommand.id,
       name: parsedCommand.name,
       description: parsedCommand.description,
       lastUpdateDate: currentTime
-    };
+    }
 
-    await this.repository.updateAttributes(product);
+    await this.repository.updateAttributes(product)
 
-    return parsedCommand.id;
+    return parsedCommand.id
   }
 }

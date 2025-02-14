@@ -1,4 +1,4 @@
-type Product = {
+interface Product {
   id: string
   name: string
   description?: string
@@ -6,4 +6,4 @@ type Product = {
   lastUpdateDate: string
 }
 
-export default Product;
+export default Product
