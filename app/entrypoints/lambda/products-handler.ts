@@ -1,10 +1,10 @@
 import { MetricUnit } from "@aws-lambda-powertools/metrics";
+import ApiResponseBuilder from "@domain/Builders/ApiResponseBuilder";
 import LambdaHandlerInterface, { LambdaApiResponse } from "@libraries/lambda-handler-interface";
 import LambdaLogger, { logger } from "@libraries/logger";
 import { LambdaMetrics } from "@libraries/metrics";
 import tracer from "@libraries/tracer";
 
-// TODO: Add api models, lambda handlers methods and middlewares?
 class Lambda implements LambdaHandlerInterface {
   @tracer.captureLambdaHandler()
   @logger.injectLambdaContext({ logEvent: false })
@@ -16,12 +16,13 @@ class Lambda implements LambdaHandlerInterface {
     });
     tracer.getSegment();
 
-    return {
-      statusCode: 200,
-      body: JSON.stringify({
+    return ApiResponseBuilder
+      .empty()
+      .withStatusCode(200)
+      .withBody({
         Hello: "World"
       })
-    };
+      .build();
   }
 }
 
