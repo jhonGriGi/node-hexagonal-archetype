@@ -1,9 +1,12 @@
-import type { LambdaInterface } from '@aws-lambda-powertools/commons/types'
+import type { LambdaInterface } from "@aws-lambda-powertools/commons/types";
 
-export interface LambdaApiResponse { status: number, body?: string }
-
-interface LambdaHandlerInterface extends LambdaInterface {
-  handler: (_event: unknown, _context: unknown) => Promise<LambdaApiResponse>
+export interface LambdaApiResponse {
+  statusCode: number,
+  body?: string
 }
 
-export default LambdaHandlerInterface
+interface LambdaHandlerInterface extends LambdaInterface {
+  handler: (_event: unknown, _context: unknown) => Promise<LambdaApiResponse>;
+}
+
+export default LambdaHandlerInterface;
