@@ -1,5 +1,12 @@
-class LambdaResponseBuilder {
+export type LambdaApiResponse = {
+  statusCode: number;
+  headers?: Record<string, string>;
+  body?: string;
+  cookies?: string[];
+  isBase64Encoded?: boolean;
+}
 
+class LambdaResponseBuilder {
   private statusCode!: number;
   private headers?: Record<string, string>;
   private body?: string;
@@ -52,13 +59,7 @@ class LambdaResponseBuilder {
     return this;
   }
 
-  build(): {
-    statusCode: number;
-    headers?: Record<string, string>;
-    body?: string;
-    cookies?: string[];
-    isBase64Encoded?: boolean;
-  } {
+  build(): LambdaApiResponse {
     return {
       statusCode: this.statusCode,
       headers: this.headers,
