@@ -1,8 +1,9 @@
-import { z } from 'zod'
+import { z } from "zod";
 
 export const CreateProductCommand = z.object({
   name: z.string().min(1),
   description: z.string().min(1)
-})
+});
 
-export default CreateProductCommand
+export type CreateProductCommand = z.infer<typeof CreateProductCommand>
+

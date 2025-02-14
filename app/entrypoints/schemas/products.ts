@@ -1,31 +1,43 @@
-import { z } from 'zod'
+import { z } from "zod";
 
-export interface GetProductResponse {
-  id: string
-  name: string
-  description?: string
-  createDate: string
-  lastUpdateDate: string
-}
+export const GetProductResponse = z.object({
+  id: z.string().min(1),
+  name: z.string().min(1),
+  description: z.string().optional(),
+  createDate: z.string().min(1),
+  lastUpdateDate: z.string().min(1)
+});
+
+export type GetProductResponse = z.infer<typeof GetProductResponse>;
 
 export const GetProductRequest = z.object({
   name: z.string().min(1),
   description: z.string().min(1)
-})
+});
 
-export interface CreateProductResponse {
-  id: string
-}
+export type GetProductRequest = z.infer<typeof GetProductRequest>;
+
+export const CreateProductResponse = z.object({
+  id: z.string().min(1).uuid()
+});
+
+export type CreateProductResponse = z.infer<typeof CreateProductResponse>;
 
 export const UpdateProductRequest = z.object({
   name: z.string().min(1),
   description: z.string().min(1)
-})
+});
 
-export interface UpdateProductResponse {
-  id: string
-}
+export type UpdateProductRequest = z.infer<typeof UpdateProductRequest>;
 
-export interface DeleteProductResponse {
-  id: string
-}
+export const UpdateProductResponse = z.object({
+  id: z.string().min(1)
+});
+
+export type UpdateProductResponse = z.infer<typeof UpdateProductResponse>;
+
+export const DeleteProductResponse = z.object({
+  id: z.string().min(1)
+});
+
+export type DeleteProductResponse = z.infer<typeof DeleteProductResponse>;
