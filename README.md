@@ -1,142 +1,188 @@
-# node-hexagonal-architecture-archetype
 
-## Metrics, Tracing and Logger
+# Arquetipo NodeJs - Arquitectura limpia Amazon
 
-to add metrics, tracing and logger for your project you can follow the example of product handlers in `app/entrypoints/lambda/products-handler.ts`, but you must change the service name in the follow files:
+Aplicación serverless con SAM para la creación de distintas lambdas en las cuentas
+## Requisitos de sistema
 
--   template.yaml -> this file is in the root folder
--   tracer.ts -> this file is in the next route: `app/libraries/tracer.ts`
--   logger.ts -> this file is in the next route: `app/libraries/logger.ts`
--   metrics.ts -> this file is in the next route: `app/libraries/metrics.ts`
+Antes de instalar el repositorio asegurate de tener las siguientes herramientas para el desarrollo de tu aplicación
 
-after those change you can add this decorators to your handler method
+* [Instalar Docker](https://www.docker.com/get-started)
+* [SAM CLI](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-install.html)
+* [NodeJs y NPM](https://nodejs.org/en/)
+* [Git](https://git-scm.com/)
 
-```typescript
-@tracer.captureLambdaHandler()
-// In logger the { logEvent: true } is disabled by default to prevent sensitive info being logged
-@logger.injectLambdaContext({ logEvent: false })
+## Instalación
+
+Para la instalación del proyecto primero debes clonar el repositorio
+
+```bash
+  git clone https://github.com/jhonGriGi/node-hexagonal-archetype.git
+  cd node-hexagonal-archetype
+  npm install
+```
+### Configurar Git con nuevo repositorio
+
+Para cambiar la url del repositorio remoto del arquetipo puedes ejecutar lo siguiente
+
+```bash
+git remote set-url origin git://new.url.here
+```
+## Variables de entorno
+
+Para desplegar el servicio en tu cuenta de aws necesitas configurar 2 variables de entorno en template.yml
+
+`POWERTOOLS_SERVICE_NAME`
+
+`POWERTOOLS_METRICS_NAMESPACE`
+
+El objetivo de estas variables es identificar el servicio en el momento de leer metricas y logs
+
+
+## Ejecución local
+
+En la consola entra a la carpeta del proyecto
+
+```bash
+  cd node-hexagonal-archetype
 ```
 
-[Visit the official AWS Powertools documentation with TypeScript](https://docs.powertools.aws.dev/lambda/typescript/latest/)
+Instala las dependencias
 
-## Handler
-
-All handlers for lambdas must implement the general interface `LambdaHandlerInterface`, all handlers always returns this object:
-
-```typescript
-export type LambdaApiResponse = { status: number; body?: string };
+```bash
+  npm install
 ```
 
-Remember that body must be an string so in code should looks like this:
+Asegurate de tener tu docker activo, en caso de estar en linux puedes ejecutar:
 
-```typescript
-return {
-    status: 200,
-    body: JSON.stringify({
-        Your: 'Object',
-    }),
-};
+```bash
+  sudo systemctl is-active docker
 ```
 
-## Deploy the sample application
+Ejecuta SAM para la invocación local de tu función lambda usando el evento que se encuentra en la carpeta events del proyecto
 
-The Serverless Application Model Command Line Interface (SAM CLI) is an extension of the AWS CLI that adds functionality for building and testing Lambda applications. It uses Docker to run your functions in an Amazon Linux environment that matches Lambda. It can also emulate your application's build environment and API.
+```bash
+sam local invoke ProductsFunction --event events/event.json
+```
 
-To use the SAM CLI, you need the following tools.
+## Tests
 
--   SAM CLI - [Install the SAM CLI](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-install.html)
--   Node.js - [Install Node.js 20](https://nodejs.org/en/), including the NPM package management tool.
--   Docker - [Install Docker community edition](https://hub.docker.com/search/?type=edition&offering=community)
+Para ejecutar los test, ejecuta el siguiente comando en la terminal
 
-To build and deploy your application for the first time, run the following in your shell:
+```bash
+  npm run test
+```
+
+## Explicación del proyecto
+
+El proyecto utiliza la arquitectura limpia de Amazon Web Services, puedes encontrar más información en el siguiente link.
+
+[Hexagonal architectures](https://docs.aws.amazon.com/es_es/prescriptive-guidance/latest/hexagonal-architectures/hexagonal-architectures.pdf)
+
+```bash
+├── app
+│   ├── adapters
+│   │   └── sql-driver-repository.ts
+│   ├── domain
+│   │   ├── Builders
+│   │   │   └── ApiResponseBuilder.ts
+│   │   ├── command
+│   │   │   ├── create_product
+│   │   │   │   ├── command_handler.ts
+│   │   │   │   └── command.ts
+│   │   │   ├── delete_product
+│   │   │   │   ├── command_handler.ts
+│   │   │   │   └── command.ts
+│   │   │   └── update_product
+│   │   │       ├── command_handler.ts
+│   │   │       └── command.ts
+│   │   ├── constants
+│   │   │   └── constants.ts
+│   │   ├── exceptions
+│   │   │   ├── domain-exception.ts
+│   │   │   └── repository-exception.ts
+│   │   ├── model
+│   │   │   ├── product.ts
+│   │   │   └── product-version.ts
+│   │   └── ports
+│   │       └── product-repository.ts
+│   ├── entrypoints
+│   │   ├── lambda
+│   │   │   └── products-handler.ts
+│   │   ├── schemas
+│   │   │   └── products.ts
+│   │   └── tests
+│   │       └── unit
+│   │           └── products-handler.test.ts
+│   └── libraries
+│       ├── lambda-handler-interface.ts
+│       ├── logger.ts
+│       ├── metrics.ts
+│       ├── orm
+│       │   └── internals
+│       │       ├── database-config.ts
+│       │       ├── prisma.ts
+│       │       ├── sequelize.ts
+│       │       └── sql-driver.ts
+│       └── tracer.ts
+├── app.ts
+├── events
+│   └── event.json
+├── jest.config.ts
+├── package.json
+├── package-lock.json
+├── README.md
+├── samconfig.toml
+├── template.yaml
+└── tsconfig.json
+```
+
+El repositorio utiliza los siguientes patrones:
+* [Factory](https://refactoring.guru/es/design-patterns/factory-method): para la implementación de conexiones a base de datos
+* [Proxy](https://refactoring.guru/es/design-patterns/proxy): para la implementación de librerias reduciendo asi la integración de librerias externas en el código fuente
+* [Builder](https://refactoring.guru/es/design-patterns/builder): se usa principalmente en la creación de las respuestas de la api
+```typescript
+ApiResponseBuilder
+    .empty()
+    .withStatusCode(200)
+    .withHeaders({ 'Content-Type': 'application/json' })
+    .withBody({
+        Hello: 'World'
+    })
+    .build()
+```
+## Desplegar la aplicación de ejemplo
+
+La Interfaz de Línea de Comandos del Modelo de Aplicaciones Sin Servidor (SAM CLI) es una extensión de la AWS CLI que agrega funcionalidades para construir y probar aplicaciones Lambda. Utiliza Docker para ejecutar tus funciones en un entorno Amazon Linux que coincide con Lambda. También puede emular el entorno de construcción y la API de tu aplicación.
+
+Para usar la SAM CLI, necesitas las siguientes herramientas:
+
+-   SAM CLI - [Instalar SAM CLI](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-install.html)
+-   Node.js - [Instalar Node.js 20](https://nodejs.org/en/), incluyendo la herramienta de gestión de paquetes NPM.
+-   Docker - [Instalar Docker edición comunitaria](https://hub.docker.com/search/?type=edition&offering=community)
+
+Para construir y desplegar tu aplicación por primera vez, ejecuta lo siguiente en tu terminal:
 
 ```bash
 sam build
 sam deploy --guided
 ```
 
-The first command will build the source of your application. The second command will package and deploy your application to AWS, with a series of prompts:
+El primer comando construirá el código fuente de tu aplicación. El segundo comando empaquetará y desplegará tu aplicación a AWS, con una serie de indicaciones:
 
--   **Stack Name**: The name of the stack to deploy to CloudFormation. This should be unique to your account and region, and a good starting point would be something matching your project name.
--   **AWS Region**: The AWS region you want to deploy your app to.
--   **Confirm changes before deploy**: If set to yes, any change sets will be shown to you before execution for manual review. If set to no, the AWS SAM CLI will automatically deploy application changes.
--   **Allow SAM CLI IAM role creation**: Many AWS SAM templates, including this example, create AWS IAM roles required for the AWS Lambda function(s) included to access AWS services. By default, these are scoped down to minimum required permissions. To deploy an AWS CloudFormation stack which creates or modifies IAM roles, the `CAPABILITY_IAM` value for `capabilities` must be provided. If permission isn't provided through this prompt, to deploy this example you must explicitly pass `--capabilities CAPABILITY_IAM` to the `sam deploy` command.
--   **Save arguments to samconfig.toml**: If set to yes, your choices will be saved to a configuration file inside the project, so that in the future you can just re-run `sam deploy` without parameters to deploy changes to your application.
+-   **Nombre de la pila**: El nombre de la pila para desplegar en CloudFormation. Debe ser único para tu cuenta y región, y un buen punto de partida podría ser algo que coincida con el nombre de tu proyecto.
+-   **Región de AWS**: La región de AWS a la que deseas desplegar tu aplicación.
+-   **Confirmar cambios antes del despliegue**: Si se establece en sí, cualquier conjunto de cambios se mostrará antes de la ejecución para una revisión manual. Si se establece en no, la AWS SAM CLI desplegará automáticamente los cambios de la aplicación.
+-   **Permitir creación de roles IAM por la SAM CLI**: Muchas plantillas de AWS SAM, incluida esta, crean roles IAM de AWS requeridos para que las funciones AWS Lambda incluidas accedan a los servicios de AWS. Por defecto, estos roles están limitados a los permisos mínimos necesarios. Para desplegar una pila de AWS CloudFormation que cree o modifique roles IAM, se debe proporcionar el valor `CAPABILITY_IAM` para `capabilities`. Si no se proporciona este permiso a través de este mensaje, para desplegar este ejemplo, debes pasar explícitamente `--capabilities CAPABILITY_IAM` al comando `sam deploy`.
+-   **Guardar los argumentos en samconfig.toml**: Si se establece en sí, tus elecciones se guardarán en un archivo de configuración dentro del proyecto, para que en el futuro solo tengas que volver a ejecutar `sam deploy` sin parámetros para desplegar cambios en tu aplicación.
 
-You can find your API Gateway Endpoint URL in the output values displayed after deployment.
+Puedes encontrar la URL del Endpoint de tu API Gateway en los valores de salida que se muestran después del despliegue.
 
-## Use the SAM CLI to build and test locally
+## Agregar un recurso a tu aplicación
 
-Build your application with the `sam build` command.
+La plantilla de la aplicación utiliza el Modelo de Aplicaciones Sin Servidor de AWS (AWS SAM) para definir los recursos de la aplicación. AWS SAM es una extensión de AWS CloudFormation con una sintaxis más sencilla para configurar recursos comunes de aplicaciones sin servidor, como funciones, activadores y APIs. Para los recursos que no están incluidos en [la especificación de SAM](https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md), puedes utilizar los tipos de recursos estándar de [AWS CloudFormation](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-template-resource-type-ref.html).
 
-```bash
-node-hexagonal-architecture-archetype$ sam build
-```
+## Recursos
 
-The SAM CLI installs dependencies defined in `hello-world/package.json`, compiles TypeScript with esbuild, creates a deployment package, and saves it in the `.aws-sam/build` folder.
+Consulta la [guía para desarrolladores de AWS SAM](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/what-is-sam.html) para obtener una introducción a la especificación de SAM, la CLI de SAM y los conceptos de aplicaciones sin servidor.
 
-Test a single function by invoking it directly with a test event. An event is a JSON document that represents the input that the function receives from the event source. Test events are included in the `events` folder in this project.
-
-Run functions locally and invoke them with the `sam local invoke` command.
-
-```bash
-node-hexagonal-architecture-archetype$ sam local invoke HelloWorldFunction --event events/event.json
-```
-
-The SAM CLI can also emulate your application's API. Use the `sam local start-api` to run the API locally on port 3000.
-
-```bash
-node-hexagonal-architecture-archetype$ sam local start-api
-node-hexagonal-architecture-archetype$ curl http://localhost:3000/
-```
-
-The SAM CLI reads the application template to determine the API's routes and the functions that they invoke. The `Events` property on each function's definition includes the route and method for each path.
-
-```yaml
-Events:
-    HelloWorld:
-        Type: Api
-        Properties:
-            Path: /hello
-            Method: get
-```
-
-## Add a resource to your application
-
-The application template uses AWS Serverless Application Model (AWS SAM) to define application resources. AWS SAM is an extension of AWS CloudFormation with a simpler syntax for configuring common serverless application resources such as functions, triggers, and APIs. For resources not included in [the SAM specification](https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md), you can use standard [AWS CloudFormation](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-template-resource-type-ref.html) resource types.
-
-## Fetch, tail, and filter Lambda function logs
-
-To simplify troubleshooting, SAM CLI has a command called `sam logs`. `sam logs` lets you fetch logs generated by your deployed Lambda function from the command line. In addition to printing the logs on the terminal, this command has several nifty features to help you quickly find the bug.
-
-`NOTE`: This command works for all AWS Lambda functions; not just the ones you deploy using SAM.
-
-```bash
-node-hexagonal-architecture-archetype$ sam logs -n HelloWorldFunction --stack-name node-hexagonal-architecture-archetype --tail
-```
-
-You can find more information and examples about filtering Lambda function logs in the [SAM CLI Documentation](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-logging.html).
-
-## Unit tests
-
-Tests are defined in the `hello-world/tests` folder in this project. Use NPM to install the [Jest test framework](https://jestjs.io/) and run unit tests.
-
-```bash
-node-hexagonal-architecture-archetype$ cd hello-world
-hello-world$ npm install
-hello-world$ npm run test
-```
-
-## Cleanup
-
-To delete the sample application that you created, use the AWS CLI. Assuming you used your project name for the stack name, you can run the following:
-
-```bash
-sam delete --stack-name node-hexagonal-architecture-archetype
-```
-
-## Resources
-
-See the [AWS SAM developer guide](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/what-is-sam.html) for an introduction to SAM specification, the SAM CLI, and serverless application concepts.
-
-Next, you can use AWS Serverless Application Repository to deploy ready to use Apps that go beyond hello world samples and learn how authors developed their applications: [AWS Serverless Application Repository main page](https://aws.amazon.com/serverless/serverlessrepo/)
+A continuación, puedes utilizar el Repositorio de Aplicaciones Sin Servidor de AWS para desplegar aplicaciones listas para usar que van más allá de los ejemplos de "Hola Mundo" y aprender cómo los autores desarrollaron sus aplicaciones: [Página principal del Repositorio de Aplicaciones Sin Servidor de AWS](https://aws.amazon.com/serverless/serverlessrepo/)
