@@ -8,9 +8,10 @@ export class SequelizeConfig implements DatabaseConfig {
     this.sequelize = new Sequelize({
       database: 'test_db',
       username: 'root',
-      password: 'password',
+      password: '215034134',
       host: 'localhost',
-      dialect: 'mysql'
+      dialect: 'postgres',
+      port: 5432
     })
   }
 
