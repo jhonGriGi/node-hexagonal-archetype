@@ -20,7 +20,7 @@ Resources:
   ProductsFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
-      CodeUri: ./
+      CodeUri: .
       Handler: app.productHandler
       Runtime: nodejs20.x
       Tracing: Active
@@ -28,14 +28,24 @@ Resources:
         Variables:
           POWERTOOLS_SERVICE_NAME: serverlessAirline
           POWERTOOLS_METRICS_NAMESPACE: serverlessAirline
+          USER_DB: !Ref USER_DB
+          PASSWORD_DB: !Ref PASSWORD_DB
+          HOST_DB: !Ref HOST_DB
+          PORT_DB: !Ref PORT_DB
+          DATABASE_DB: !Ref DATABASE_DB
       Architectures:
         - x86_64
       Events:
-        HelloWorld:
+        Api:
           Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
           Properties:
-            Path: /hello
-            Method: get
+            Path: /products
+            Method: ANY
+        ApiById:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /products/{id}
+            Method: ANY
     Metadata:
       # Manage esbuild properties
       BuildMethod: esbuild
@@ -70,3 +80,20 @@ Outputs:
   HelloWorldFunctionIamRole:
     Description: Implicit IAM Role created for Hello World function
     Value: !GetAtt ProductsFunctionRole.Arn
+
+Parameters:
+  USER_DB:
+    Type: String
+    Description: User database
+  PASSWORD_DB:
+    Type: String
+    Description: Password database
+  HOST_DB:
+    Type: String
+    Description: Host database
+  PORT_DB:
+    Type: String
+    Description: Port database
+  DATABASE_DB:
+    Type: String
+    Description: Database database

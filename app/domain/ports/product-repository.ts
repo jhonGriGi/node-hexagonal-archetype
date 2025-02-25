@@ -4,6 +4,7 @@ interface ProductRepository {
   add: (product: Product) => Promise<void>
   updateAttributes: (product: Product) => Promise<void>
   get: (productId: string) => Promise<Product | null>
+  list: () => Promise<Product[] | null> 
   delete: (productId: string) => Promise<void>
 }
 

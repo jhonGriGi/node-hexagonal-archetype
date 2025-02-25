@@ -15,8 +15,8 @@ export class CreateProductCommandHandler {
       id,
       name: parsedCommand.name,
       description: parsedCommand.description,
-      createDate: currentTime,
-      lastUpdateDate: currentTime
+      create_date: currentTime,
+      last_update_date: currentTime
     }
 
     await this.repository.add(product)
