@@ -16,7 +16,7 @@ export class DatabaseDriverRepository implements ProductRepository {
 		const query = "SELECT * FROM products";
 		const [results] = await connection.query(query);
 
-		// await this.dbConfig.disconnect();
+		await this.dbConfig.disconnect();
 
 		return results;
 	}
@@ -26,17 +26,15 @@ export class DatabaseDriverRepository implements ProductRepository {
 		const connection = this.dbConfig.getConnection();
 
 		const query = "INSERT INTO products VALUES (?, ?, ?, ?, ?)";
-		await connection.query(query, {
-			replacements: [
-				product.id,
-				product.name,
-				product.description,
-				product.create_date,
-				product.last_update_date,
-			],
-		});
+		await connection.query(query, [
+			product.id,
+			product.name,
+			product.description,
+			product.create_date,
+			product.last_update_date,
+		]);
 
-		// await this.dbConfig.disconnect();
+		await this.dbConfig.disconnect();
 	}
 
 	public async updateAttributes(product: Product): Promise<void> {
@@ -45,11 +43,14 @@ export class DatabaseDriverRepository implements ProductRepository {
 
 		const query =
 			"UPDATE products SET name = ?, description = ?, last_update_date = ? WHERE products.id = ?";
-		await connection.query(query, {
-			replacements: [product.name, product.description, product.last_update_date, product.id],
-		});
+		await connection.query(query, [
+			product.name,
+			product.description,
+			product.last_update_date,
+			product.id,
+		]);
 
-		// await this.dbConfig.disconnect();
+		await this.dbConfig.disconnect();
 	}
 
 	public async get(productId: string): Promise<Product | null> {
@@ -57,11 +58,9 @@ export class DatabaseDriverRepository implements ProductRepository {
 		const connection = this.dbConfig.getConnection();
 
 		const query = "SELECT * FROM products WHERE products.id = ?";
-		const queryResponse = await connection.query(query, {
-			replacements: [productId],
-		});
+		const queryResponse = await connection.query(query, [productId]);
 
-		// await this.dbConfig.disconnect();
+		await this.dbConfig.disconnect();
 
 		return queryResponse[FIRST_POSITION] as unknown as Product;
 	}
@@ -71,8 +70,8 @@ export class DatabaseDriverRepository implements ProductRepository {
 		const connection = this.dbConfig.getConnection();
 
 		const query = "DELETE FROM products WHERE products.id = ?";
-		await connection.query(query, { replacements: [productId] });
+		await connection.query(query, [productId]);
 
-		// await this.dbConfig.disconnect();
+		await this.dbConfig.disconnect();
 	}
 }
