@@ -11,10 +11,9 @@ export class DatabaseDriverRepository implements ProductRepository {
 	}
 	public async list(): Promise<Product[] | null> {
 		await this.dbConfig.connect();
-		const connection = this.dbConfig.getConnection();
 
 		const query = "SELECT * FROM products";
-		const [results] = await connection.query(query);
+		const results = await this.dbConfig.query(query, []);
 
 		await this.dbConfig.disconnect();
 
@@ -23,10 +22,9 @@ export class DatabaseDriverRepository implements ProductRepository {
 
 	public async add(product: Product): Promise<void> {
 		await this.dbConfig.connect();
-		const connection = this.dbConfig.getConnection();
 
 		const query = "INSERT INTO products VALUES (?, ?, ?, ?, ?)";
-		await connection.query(query, [
+		await this.dbConfig.query(query, [
 			product.id,
 			product.name,
 			product.description,
@@ -39,11 +37,10 @@ export class DatabaseDriverRepository implements ProductRepository {
 
 	public async updateAttributes(product: Product): Promise<void> {
 		await this.dbConfig.connect();
-		const connection = this.dbConfig.getConnection();
 
 		const query =
 			"UPDATE products SET name = ?, description = ?, last_update_date = ? WHERE products.id = ?";
-		await connection.query(query, [
+		await this.dbConfig.query(query, [
 			product.name,
 			product.description,
 			product.last_update_date,
@@ -55,10 +52,9 @@ export class DatabaseDriverRepository implements ProductRepository {
 
 	public async get(productId: string): Promise<Product | null> {
 		await this.dbConfig.connect();
-		const connection = this.dbConfig.getConnection();
 
 		const query = "SELECT * FROM products WHERE products.id = ?";
-		const queryResponse = await connection.query(query, [productId]);
+		const queryResponse = await this.dbConfig.query(query, [productId]);
 
 		await this.dbConfig.disconnect();
 
@@ -67,10 +63,9 @@ export class DatabaseDriverRepository implements ProductRepository {
 
 	public async delete(productId: string): Promise<void> {
 		await this.dbConfig.connect();
-		const connection = this.dbConfig.getConnection();
 
 		const query = "DELETE FROM products WHERE products.id = ?";
-		await connection.query(query, [productId]);
+		await this.dbConfig.query(query, [productId]);
 
 		await this.dbConfig.disconnect();
 	}

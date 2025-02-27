@@ -17,10 +17,9 @@ export class SQLiteDatabase implements DatabaseConfig {
 	}
 
 	// Método para ejecutar una consulta (INSERT, UPDATE, DELETE)
-	async query(query: string, params: any[] = []): Promise<void> {
+	async query(query: string, params: any[] = []): Promise<any> {
 		try {
-			await this.db.run(query, params);
-			console.log("Consulta ejecutada correctamente");
+			return await this.db.run(query, params);
 		} catch (error) {
 			console.error("Error al ejecutar la consulta", error);
 		}

@@ -1,4 +1,4 @@
-import ApiResponseBuilder, { LambdaApiResponse } from "@domain/Builders/ApiResponseBuilder";
+import ApiResponseBuilder, { LambdaApiResponse } from "@domain/builders/ApiResponseBuilder";
 import { CreateProductCommand } from "@domain/command/create_product/command";
 import { CreateProductCommandHandler } from "@domain/command/create_product/command_handler";
 import LambdaHandlerInterface from "@libraries/lambda-handler-interface";
@@ -15,7 +15,7 @@ export class CreateProductHandler implements LambdaHandlerInterface {
 		_context: AWSLambda.Context
 	): Promise<LambdaApiResponse> {
 		try {
-			const parsedBody = CreateProductCommand.safeParse(_event.body);
+			const parsedBody = CreateProductCommand.safeParse(JSON.parse(_event.body!));
 			if (!parsedBody.success) {
 				return ApiResponseBuilder.empty()
 					.withStatusCode(400)

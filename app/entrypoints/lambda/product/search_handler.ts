@@ -1,4 +1,4 @@
-import ApiResponseBuilder, { LambdaApiResponse } from "@domain/Builders/ApiResponseBuilder";
+import ApiResponseBuilder, { LambdaApiResponse } from "@domain/builders/ApiResponseBuilder";
 import { SearchProductCommand } from "@domain/command/search_product/command";
 import { SearchProductCommandHandler } from "@domain/command/search_product/command_handler";
 import LambdaHandlerInterface from "@libraries/lambda-handler-interface";
@@ -15,13 +15,8 @@ export class SearchProductHandler implements LambdaHandlerInterface {
 		_context: AWSLambda.Context
 	): Promise<LambdaApiResponse> {
 		const parsedBody = SearchProductCommand.safeParse(_event.pathParameters);
-		if (!parsedBody.success) {
-			return ApiResponseBuilder.empty()
-				.withStatusCode(400)
-				.withBody({ errors: parsedBody.error.errors })
-				.build();
-		}
-		const products = await this.getProductCommand.execute(parsedBody.data);
+
+		const products = await this.getProductCommand.execute(parsedBody.data!);
 
 		if (typeof products === null) {
 			return ApiResponseBuilder.empty()

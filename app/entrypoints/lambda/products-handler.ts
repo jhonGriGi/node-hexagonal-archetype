@@ -8,7 +8,6 @@ import { DeleteProductHandler } from "@lambda/product/delete_handler";
 import { SearchProductHandler } from "@lambda/product/search_handler";
 import { UpdateProductHandler } from "@lambda/product/update_handler";
 import createHandler from "@libraries/lambda_instance_builder";
-import { MySQL2Config } from "@libraries/orm/internals/sql-driver";
 import { SQLiteDatabase } from "@libraries/orm/internals/sqlite";
 
 const databaseConfig = new SQLiteDatabase();
