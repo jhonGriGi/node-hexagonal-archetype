@@ -13,11 +13,11 @@ export class UpdateProductCommandHandler {
       id: parsedCommand.id,
       name: parsedCommand.name,
       description: parsedCommand.description,
-      lastUpdateDate: currentTime
+      last_update_date: currentTime
     }
 
     await this.repository.updateAttributes(product)
 
-    return parsedCommand.id
+    return parsedCommand.id;
   }
 }
