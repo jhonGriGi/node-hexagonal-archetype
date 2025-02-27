@@ -1,99 +1,164 @@
-AWSTemplateFormatVersion: '2010-09-09'
+AWSTemplateFormatVersion: "2010-09-09"
 Transform: AWS::Serverless-2016-10-31
 Description: |
-  node-hexagonal-architecture-archetype
-  Sample SAM Template for node-hexagonal-architecture-archetype
+    node-hexagonal-architecture-archetype
+    Sample SAM Template for node-hexagonal-architecture-archetype
 
-# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
 Globals:
-  Function:
-    Timeout: 3
+    Function:
+        Timeout: 3
+        LoggingConfig:
+            LogFormat: JSON
 
-    # You can add LoggingConfig parameters such as the Logformat, Log Group, and SystemLogLevel or ApplicationLogLevel. Learn more here https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-resource-function.html#sam-function-loggingconfig.
-    LoggingConfig:
-      LogFormat: JSON
+    Api:
+        Auth:
+            DefaultAuthorizer: NONE
 
-  Api:
-    Auth:
-      DefaultAuthorizer: NONE
 Resources:
-  ProductsFunction:
-    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
-    Properties:
-      CodeUri: .
-      Handler: app.productHandler
-      Runtime: nodejs20.x
-      Tracing: Active
-      Environment:
-        Variables:
-          POWERTOOLS_SERVICE_NAME: serverlessAirline
-          POWERTOOLS_METRICS_NAMESPACE: serverlessAirline
-          USER_DB: !Ref USER_DB
-          PASSWORD_DB: !Ref PASSWORD_DB
-          HOST_DB: !Ref HOST_DB
-          PORT_DB: !Ref PORT_DB
-          DATABASE_DB: !Ref DATABASE_DB
-      Architectures:
-        - x86_64
-      Events:
-        Api:
-          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
-          Properties:
-            Path: /products
-            Method: ANY
-        ApiById:
-          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
-          Properties:
-            Path: /products/{id}
-            Method: ANY
-    Metadata:
-      # Manage esbuild properties
-      BuildMethod: esbuild
-      BuildProperties:
-        Minify: true
-        Target: es2020
-        Sourcemap: true
-        EntryPoints:
-          - app.ts
+    # Function for GET Products
+    GetProductsFunction:
+        Type: AWS::Serverless::Function
+        Properties:
+            CodeUri: .
+            Handler: app.getProductsHandler
+            Runtime: nodejs20.x
+            Tracing: Disabled
+            Environment:
+                Variables:
+                    POWERTOOLS_SERVICE_NAME: serverlessAirline
+                    POWERTOOLS_METRICS_NAMESPACE: serverlessAirline
+                    USER_DB: !Ref USER_DB
+                    PASSWORD_DB: !Ref PASSWORD_DB
+                    HOST_DB: !Ref HOST_DB
+                    PORT_DB: !Ref PORT_DB
+                    DATABASE_DB: !Ref DATABASE_DB
+            Architectures:
+                - x86_64
+            Events:
+                GetApi:
+                    Type: Api
+                    Properties:
+                        Path: /products
+                        Method: GET
 
-  ApplicationResourceGroup:
-    Type: AWS::ResourceGroups::Group
-    Properties:
-      Name: !Sub ApplicationInsights-SAM-${AWS::StackName}
-      ResourceQuery:
-        Type: CLOUDFORMATION_STACK_1_0
-  ApplicationInsightsMonitoring:
-    Type: AWS::ApplicationInsights::Application
-    Properties:
-      ResourceGroupName: !Ref ApplicationResourceGroup
-      AutoConfigurationEnabled: 'true'
+    # Function for POST Products
+    PostProductsFunction:
+        Type: AWS::Serverless::Function
+        Properties:
+            CodeUri: .
+            Handler: app.postProductsHandler
+            Runtime: nodejs20.x
+            Tracing: Disabled
+            Environment:
+                Variables:
+                    POWERTOOLS_SERVICE_NAME: serverlessAirline
+                    POWERTOOLS_METRICS_NAMESPACE: serverlessAirline
+                    USER_DB: !Ref USER_DB
+                    PASSWORD_DB: !Ref PASSWORD_DB
+                    HOST_DB: !Ref HOST_DB
+                    PORT_DB: !Ref PORT_DB
+                    DATABASE_DB: !Ref DATABASE_DB
+            Architectures:
+                - x86_64
+            Events:
+                PostApi:
+                    Type: Api
+                    Properties:
+                        Path: /products
+                        Method: POST
+
+    # Function for PUT Products
+    PutProductsFunction:
+        Type: AWS::Serverless::Function
+        Properties:
+            CodeUri: .
+            Handler: app.putProductsHandler
+            Runtime: nodejs20.x
+            Tracing: Disabled
+            Environment:
+                Variables:
+                    POWERTOOLS_SERVICE_NAME: serverlessAirline
+                    POWERTOOLS_METRICS_NAMESPACE: serverlessAirline
+                    USER_DB: !Ref USER_DB
+                    PASSWORD_DB: !Ref PASSWORD_DB
+                    HOST_DB: !Ref HOST_DB
+                    PORT_DB: !Ref PORT_DB
+                    DATABASE_DB: !Ref DATABASE_DB
+            Architectures:
+                - x86_64
+            Events:
+                PutApi:
+                    Type: Api
+                    Properties:
+                        Path: /products/{id}
+                        Method: PUT
+
+    # Function for DELETE Products
+    DeleteProductsFunction:
+        Type: AWS::Serverless::Function
+        Properties:
+            CodeUri: .
+            Handler: app.deleteProductsHandler
+            Runtime: nodejs20.x
+            Tracing: Disabled
+            Environment:
+                Variables:
+                    POWERTOOLS_SERVICE_NAME: serverlessAirline
+                    POWERTOOLS_METRICS_NAMESPACE: serverlessAirline
+                    USER_DB: !Ref USER_DB
+                    PASSWORD_DB: !Ref PASSWORD_DB
+                    HOST_DB: !Ref HOST_DB
+                    PORT_DB: !Ref PORT_DB
+                    DATABASE_DB: !Ref DATABASE_DB
+            Architectures:
+                - x86_64
+            Events:
+                DeleteApi:
+                    Type: Api
+                    Properties:
+                        Path: /products/{id}
+                        Method: DELETE
+
+    ApplicationResourceGroup:
+        Type: AWS::ResourceGroups::Group
+        Properties:
+            Name: !Sub ApplicationInsights-SAM-${AWS::StackName}
+            ResourceQuery:
+                Type: CLOUDFORMATION_STACK_1_0
+
+    ApplicationInsightsMonitoring:
+        Type: AWS::ApplicationInsights::Application
+        Properties:
+            ResourceGroupName: !Ref ApplicationResourceGroup
+            AutoConfigurationEnabled: "true"
+
 Outputs:
-  # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
-  # Find out more about other implicit resources you can reference within SAM
-  # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
-  HelloWorldApi:
-    Description: API Gateway endpoint URL for Prod stage for Hello World function
-    Value: !Sub https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/products/
-  HelloWorldFunction:
-    Description: Hello World Lambda Function ARN
-    Value: !GetAtt ProductsFunction.Arn
-  HelloWorldFunctionIamRole:
-    Description: Implicit IAM Role created for Hello World function
-    Value: !GetAtt ProductsFunctionRole.Arn
+    GetProductsApi:
+        Description: API Gateway endpoint URL for GET Products
+        Value: !Sub https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/products/
+    PostProductsApi:
+        Description: API Gateway endpoint URL for POST Products
+        Value: !Sub https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/products/
+    PutProductsApi:
+        Description: API Gateway endpoint URL for PUT Products
+        Value: !Sub https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/products/{id}
+    DeleteProductsApi:
+        Description: API Gateway endpoint URL for DELETE Products
+        Value: !Sub https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/products/{id}
 
 Parameters:
-  USER_DB:
-    Type: String
-    Description: User database
-  PASSWORD_DB:
-    Type: String
-    Description: Password database
-  HOST_DB:
-    Type: String
-    Description: Host database
-  PORT_DB:
-    Type: String
-    Description: Port database
-  DATABASE_DB:
-    Type: String
-    Description: Database database
+    USER_DB:
+        Type: String
+        Description: User database
+    PASSWORD_DB:
+        Type: String
+        Description: Password database
+    HOST_DB:
+        Type: String
+        Description: Host database
+    PORT_DB:
+        Type: String
+        Description: Port database
+    DATABASE_DB:
+        Type: String
+        Description: Database database
