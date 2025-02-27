@@ -1,27 +1,27 @@
 {
-    "compilerOptions": {
-        "target": "es2020",
-        "strict": true,
-        "preserveConstEnums": true,
-        "noEmit": true,
-        "sourceMap": false,
-        "module": "es2015",
-        "moduleResolution": "node",
-        "esModuleInterop": true,
-        "skipLibCheck": true,
-        "forceConsistentCasingInFileNames": true,
-        "experimentalDecorators": true,
-        "baseUrl": "./",
-        "paths": {
-            "@domain/*": ["app/domain/*"],
-            "@adapters/*": ["app/adapters/*"],
-            "@lambda/*": ["app/entrypoints/lambda/*"],
-            "@schemas/*": ["app/entrypoints/schemas/*"],
-            "@libraries/*": ["app/libraries/*"],
-            "@ports/*": ["app/domain/ports/*"],
-            "@model/*": ["app/domain/model/*"]
-        }
-    },
-    "exclude": ["node_modules"],
-    "include": ["app/**/*.ts", "**/*.test.ts"]
+	"compilerOptions": {
+		"target": "es2020",
+		"strict": true,
+		"preserveConstEnums": true,
+		"noEmit": true,
+		"sourceMap": false,
+		"module": "es2015",
+		"moduleResolution": "node",
+		"esModuleInterop": true,
+		"skipLibCheck": true,
+		"forceConsistentCasingInFileNames": true,
+		"experimentalDecorators": true,
+		"baseUrl": "./",
+		"paths": {
+			"@domain/*": ["app/domain/*"],
+			"@adapters/*": ["app/adapters/*"],
+			"@lambda/*": ["app/entrypoints/lambda/*"],
+			"@schemas/*": ["app/entrypoints/schemas/*"],
+			"@libraries/*": ["app/libraries/*"],
+			"@ports/*": ["app/domain/ports/*"],
+			"@model/*": ["app/domain/model/*"]
+		}
+	},
+	"exclude": ["node_modules"],
+	"include": ["app/**/*.ts", "**/*.test.ts"]
 }

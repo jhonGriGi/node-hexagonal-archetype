@@ -1,11 +1,7 @@
 import { Sequelize } from "sequelize";
 import { DatabaseConfig } from "./database-config";
 import pg from "pg";
-const USER_DB = process.env.USER_DB;
-const PASSWORD_DB = process.env.PASSWORD_DB;
-const HOST_DB = process.env.HOST_DB;
-const PORT_DB = process.env.PORT_DB;
-const DATABASE_DB = process.env.DATABASE_DB;
+import { DATABASE_DB, HOST_DB, PASSWORD_DB, PORT_DB, USER_DB } from "@domain/constants/constants";
 export class SequelizeConfig implements DatabaseConfig {
   private readonly sequelize: Sequelize;
 
