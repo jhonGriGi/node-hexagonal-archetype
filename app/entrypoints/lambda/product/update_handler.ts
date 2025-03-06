@@ -6,7 +6,7 @@ import { logger } from "@libraries/logger";
 import { tracer } from "@libraries/tracer";
 
 export class UpdateProductHandler implements LambdaHandlerInterface {
-	constructor(private readonly updateProductCommand: UpdateProductCommandHandler) {}
+	constructor(private readonly commandHandler: UpdateProductCommandHandler) {}
 
 	@tracer.captureLambdaHandler()
 	@logger.injectLambdaContext({ logEvent: false })
@@ -22,7 +22,7 @@ export class UpdateProductHandler implements LambdaHandlerInterface {
 					.withBody({ errors: parsedBody.error.errors })
 					.build();
 			}
-			const id = await this.updateProductCommand.execute(parsedBody.data);
+			const id = await this.commandHandler.execute(parsedBody.data);
 			return ApiResponseBuilder.empty()
 				.withStatusCode(200)
 				.withHeaders({ "Content-Type": "application/json" })

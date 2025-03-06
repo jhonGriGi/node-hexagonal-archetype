@@ -6,7 +6,7 @@ import { logger } from "@libraries/logger";
 import { tracer } from "@libraries/tracer";
 
 export class SearchProductHandler implements LambdaHandlerInterface {
-	constructor(private readonly getProductCommand: SearchProductCommandHandler) {}
+	constructor(private readonly commandHandler: SearchProductCommandHandler) {}
 
 	@tracer.captureLambdaHandler()
 	@logger.injectLambdaContext({ logEvent: false })
@@ -16,7 +16,7 @@ export class SearchProductHandler implements LambdaHandlerInterface {
 	): Promise<LambdaApiResponse> {
 		const parsedBody = SearchProductCommand.safeParse(_event.pathParameters);
 
-		const products = await this.getProductCommand.execute(parsedBody.data!);
+		const products = await this.commandHandler.execute(parsedBody.data!);
 
 		if (typeof products === null) {
 			return ApiResponseBuilder.empty()
