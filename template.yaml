@@ -40,6 +40,11 @@ Resources:
                     Properties:
                         Path: /products/{id}
                         Method: GET
+                GetAllApi:
+                    Type: Api
+                    Properties:
+                        Path: /products
+                        Method: GET
         Metadata:
       # Manage esbuild properties
             BuildMethod: esbuild

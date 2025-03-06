@@ -2,6 +2,7 @@ import { Sequelize } from "sequelize";
 import { DatabaseConfig } from "./database-config";
 import pg from "pg";
 import { DATABASE_DB, HOST_DB, PASSWORD_DB, PORT_DB, USER_DB } from "@domain/constants/constants";
+import LambdaLogger from "@libraries/logger";
 export class SequelizeConfig implements DatabaseConfig {
 	private readonly sequelize: Sequelize;
 
@@ -21,9 +22,9 @@ export class SequelizeConfig implements DatabaseConfig {
 	public async connect(): Promise<void> {
 		try {
 			await this.sequelize.authenticate();
-			LambdaLogger.log("Sequelize connection established.");
+			LambdaLogger.info("Sequelize connection established.");
 		} catch (error) {
-			LambdaLogger.error("Unable to connect to Sequelize:", error);
+			LambdaLogger.error("Unable to connect to Sequelize:", error as Error);
 		}
 	}
 

@@ -15,9 +15,9 @@ export class DatabaseDriverRepository implements ProductRepository {
 		const query = "SELECT * FROM products";
 		const results = await this.dbConfig.query(query, []);
 
-		// await this.dbConfig.disconnect();
+		await this.dbConfig.disconnect();
 
-		return results;
+		return results[FIRST_POSITION];
 	}
 
 	public async add(product: Product): Promise<void> {
@@ -32,7 +32,7 @@ export class DatabaseDriverRepository implements ProductRepository {
 			product.last_update_date,
 		]);
 
-		// await this.dbConfig.disconnect();
+		await this.dbConfig.disconnect();
 	}
 
 	public async updateAttributes(product: Product): Promise<void> {
@@ -47,7 +47,7 @@ export class DatabaseDriverRepository implements ProductRepository {
 			product.id,
 		]);
 
-		// await this.dbConfig.disconnect();
+		await this.dbConfig.disconnect();
 	}
 
 	public async get(productId: string): Promise<Product | null> {
@@ -56,7 +56,7 @@ export class DatabaseDriverRepository implements ProductRepository {
 		const query = "SELECT * FROM products WHERE products.id = ?";
 		const queryResponse = await this.dbConfig.query(query, [productId]);
 
-		// await this.dbConfig.disconnect();
+		await this.dbConfig.disconnect();
 		return queryResponse[FIRST_POSITION] as unknown as Product;
 	}
 
@@ -66,6 +66,6 @@ export class DatabaseDriverRepository implements ProductRepository {
 		const query = "DELETE FROM products WHERE products.id = ?";
 		await this.dbConfig.query(query, [productId]);
 
-		// await this.dbConfig.disconnect();
+		await this.dbConfig.disconnect();
 	}
 }
