@@ -4,8 +4,8 @@ export const GetProductsResponse = z.object({
 	id: z.string().min(1),
 	name: z.string().min(1),
 	description: z.string().optional(),
-	createDate: z.string().min(1),
-	lastUpdateDate: z.string().min(1),
+	create_date: z.string().min(1),
+	last_update_date: z.string().min(1),
 });
 
 export type GetProductsResponse = z.infer<typeof GetProductsResponse>;
@@ -15,8 +15,8 @@ export const GetAllProductsResponse = z.array(
 		id: z.string().min(1),
 		name: z.string().min(1),
 		description: z.string().optional(),
-		createDate: z.string().min(1),
-		lastUpdateDate: z.string().min(1),
+		create_date: z.string().min(1),
+		last_update_date: z.string().min(1),
 	})
 );
 

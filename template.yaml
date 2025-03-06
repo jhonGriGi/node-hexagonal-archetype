@@ -40,7 +40,20 @@ Resources:
                     Properties:
                         Path: /products/{id}
                         Method: GET
-
+                GetAllApi:
+                    Type: Api
+                    Properties:
+                        Path: /products
+                        Method: GET
+        Metadata:
+      # Manage esbuild properties
+            BuildMethod: esbuild
+            BuildProperties:
+                Minify: true
+                Target: es2020
+                Sourcemap: true
+                EntryPoints:
+                - app.ts
     # Function for POST Products
     PostProductsFunction:
         Type: AWS::Serverless::Function
@@ -66,7 +79,16 @@ Resources:
                     Properties:
                         Path: /products
                         Method: POST
-
+        Metadata:
+      # Manage esbuild properties
+            BuildMethod: esbuild
+            BuildProperties:
+                Minify: true
+                Target: es2020
+                Sourcemap: true
+                EntryPoints:
+                - app.ts
+        
     # Function for PUT Products
     PutProductsFunction:
         Type: AWS::Serverless::Function
@@ -92,6 +114,15 @@ Resources:
                     Properties:
                         Path: /products
                         Method: PUT
+        Metadata:
+      # Manage esbuild properties
+            BuildMethod: esbuild
+            BuildProperties:
+                Minify: true
+                Target: es2020
+                Sourcemap: true
+                EntryPoints:
+                - app.ts
 
     # Function for DELETE Products
     DeleteProductsFunction:
@@ -118,6 +149,15 @@ Resources:
                     Properties:
                         Path: /products/{id}
                         Method: DELETE
+        Metadata:
+      # Manage esbuild properties
+            BuildMethod: esbuild
+            BuildProperties:
+                Minify: true
+                Target: es2020
+                Sourcemap: true
+                EntryPoints:
+                - app.ts
 
     ApplicationResourceGroup:
         Type: AWS::ResourceGroups::Group

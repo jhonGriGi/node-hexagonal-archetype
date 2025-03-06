@@ -17,7 +17,7 @@ export class DatabaseDriverRepository implements ProductRepository {
 
 		await this.dbConfig.disconnect();
 
-		return results;
+		return results[FIRST_POSITION];
 	}
 
 	public async add(product: Product): Promise<void> {
@@ -57,7 +57,6 @@ export class DatabaseDriverRepository implements ProductRepository {
 		const queryResponse = await this.dbConfig.query(query, [productId]);
 
 		await this.dbConfig.disconnect();
-
 		return queryResponse[FIRST_POSITION] as unknown as Product;
 	}
 
