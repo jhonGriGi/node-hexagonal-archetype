@@ -81,11 +81,11 @@ El proyecto utiliza la arquitectura limpia de Amazon Web Services, puedes encont
 ```bash
 ├── app
 │   ├── adapters
-│   │   └── sql-driver-repository.ts
+│   │   └── sql-driver-repository.ts # los adapters tendran las implementaciones externas como bases de datos u otras apis
 │   ├── domain
 │   │   ├── Builders
-│   │   │   └── ApiResponseBuilder.ts
-│   │   ├── command
+│   │   │   └── ApiResponseBuilder.ts # builder para crear la respuesta de la lambda
+│   │   ├── command      # dentro de los command estara la logica de negocio de la aplicacion
 │   │   │   ├── create_product
 │   │   │   │   ├── command_handler.ts
 │   │   │   │   └── command.ts
@@ -103,17 +103,17 @@ El proyecto utiliza la arquitectura limpia de Amazon Web Services, puedes encont
 │   │   ├── model
 │   │   │   ├── product.ts
 │   │   │   └── product-version.ts
-│   │   └── ports
+│   │   └── ports     # los ports seran las interfaces que seran implementadas en los adaptadores
 │   │       └── product-repository.ts
 │   ├── entrypoints
-│   │   ├── lambda
+│   │   ├── lambda    # los entrypoints de la lambda en este lugar estaran los handlers
 │   │   │   └── products-handler.ts
-│   │   ├── schemas
+│   │   ├── schemas   # los tipos de request y response de los handlers
 │   │   │   └── products.ts
 │   │   └── tests
 │   │       └── unit
 │   │           └── products-handler.test.ts
-│   └── libraries
+│   └── libraries     # en libraries estaran las implementaciones de las librerias externas
 │       ├── lambda-handler-interface.ts
 │       ├── logger.ts
 │       ├── metrics.ts
@@ -125,7 +125,7 @@ El proyecto utiliza la arquitectura limpia de Amazon Web Services, puedes encont
 │       │       └── sql-driver.ts
 │       └── tracer.ts
 ├── app.ts
-├── events
+├── events     # Los eventos estaran alojados en events para la ejecucion local con sam
 │   └── event.json
 ├── jest.config.ts
 ├── package.json
