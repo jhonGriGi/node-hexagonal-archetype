@@ -8,9 +8,9 @@ import { DeleteProductHandler } from "@lambda/product/delete_handler";
 import { SearchProductHandler } from "@lambda/product/search_handler";
 import { UpdateProductHandler } from "@lambda/product/update_handler";
 import createHandler from "@libraries/lambda_instance_builder";
-import { SQLiteDatabase } from "@libraries/orm/internals/sqlite";
+import { SequelizeConfig } from "@libraries/orm/internals/sequelize";
 
-const databaseConfig = new SQLiteDatabase();
+const databaseConfig = new SequelizeConfig();
 const repository = new DatabaseDriverRepository(databaseConfig);
 
 // Export Lambda handlers

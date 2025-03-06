@@ -14,8 +14,8 @@ export class SequelizeConfig implements DatabaseConfig {
 			}
 		);
 	}
-	public async query(query: string, params: any[]): Promise<void> {
-		throw new Error("Method not implemented.");
+	public async query(query: string, params: any[]): Promise<[unknown[], unknown]> {
+		return await this.sequelize.query(query, { replacements: params });
 	}
 
 	public async connect(): Promise<void> {
