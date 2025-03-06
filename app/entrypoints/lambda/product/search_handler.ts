@@ -4,6 +4,7 @@ import { SearchProductCommandHandler } from "@domain/command/search_product/comm
 import LambdaHandlerInterface from "@libraries/lambda-handler-interface";
 import { logger } from "@libraries/logger";
 import { tracer } from "@libraries/tracer";
+import { GetAllProductsResponse, GetProductsResponse } from "@schemas/products";
 
 export class SearchProductHandler implements LambdaHandlerInterface {
 	constructor(private readonly commandHandler: SearchProductCommandHandler) {}
@@ -14,21 +15,27 @@ export class SearchProductHandler implements LambdaHandlerInterface {
 		_event: AWSLambda.APIGatewayProxyEvent,
 		_context: AWSLambda.Context
 	): Promise<LambdaApiResponse> {
-		const parsedBody = SearchProductCommand.safeParse(_event.pathParameters);
+		const parsedBody = SearchProductCommand.safeParse(_event.pathParameters).data;
 
-		const products = await this.commandHandler.execute(parsedBody.data!);
+		const commandResponse = await this.commandHandler.execute({
+			id: parsedBody?.id,
+		});
 
-		if (typeof products === null) {
+		if (typeof commandResponse === null) {
 			return ApiResponseBuilder.empty()
 				.withStatusCode(404)
 				.withHeaders({ "Content-Type": "application/json" })
 				.build();
 		}
 
+		const products = Array.isArray(commandResponse)
+			? GetAllProductsResponse.safeParse(commandResponse).data
+			: GetProductsResponse.safeParse(commandResponse).data;
+
 		return ApiResponseBuilder.empty()
 			.withStatusCode(200)
 			.withHeaders({ "Content-Type": "application/json" })
-			.withBody({ products })
+			.withBody(Array.isArray(products) ? [...products] : { ...products })
 			.build();
 	}
 }

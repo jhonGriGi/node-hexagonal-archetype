@@ -4,6 +4,7 @@ import { UpdateProductCommandHandler } from "@domain/command/update_product/comm
 import LambdaHandlerInterface from "@libraries/lambda-handler-interface";
 import { logger } from "@libraries/logger";
 import { tracer } from "@libraries/tracer";
+import { UpdateProductResponse } from "@schemas/products";
 
 export class UpdateProductHandler implements LambdaHandlerInterface {
 	constructor(private readonly commandHandler: UpdateProductCommandHandler) {}
@@ -22,11 +23,15 @@ export class UpdateProductHandler implements LambdaHandlerInterface {
 					.withBody({ errors: parsedBody.error.errors })
 					.build();
 			}
-			const id = await this.commandHandler.execute(parsedBody.data);
+			const commandResponse = await this.commandHandler.execute(parsedBody.data);
 			return ApiResponseBuilder.empty()
 				.withStatusCode(200)
 				.withHeaders({ "Content-Type": "application/json" })
-				.withBody({ id })
+				.withBody(
+					UpdateProductResponse.safeParse({
+						id: commandResponse,
+					}).data!
+				)
 				.build();
 		} catch (error) {
 			return ApiResponseBuilder.empty()
