@@ -16,7 +16,7 @@ export class DeleteProductHandler implements LambdaHandlerInterface {
 		_context: AWSLambda.Context
 	): Promise<LambdaApiResponse> {
 		try {
-			const parsedBody = DeleteProductCommand.safeParse(JSON.parse(_event.body!));
+			const parsedBody = DeleteProductCommand.safeParse(_event.pathParameters);
 			if (!parsedBody.success) {
 				return ApiResponseBuilder.empty()
 					.withStatusCode(400)

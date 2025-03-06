@@ -1,7 +1,7 @@
 import { DeleteProductCommandHandler } from "@domain/command/delete_product/command_handler";
 import { DeleteProductHandler } from "@lambda/product/delete_handler";
 import { repositoryMock } from "./repository_mock";
-import { Context } from "aws-lambda";
+import { APIGatewayProxyEvent, Context } from "aws-lambda";
 
 const command = new DeleteProductCommandHandler(repositoryMock);
 
@@ -15,10 +15,10 @@ describe("DeleteProductHandler test suit", () => {
 
 		const response = await handler.handler(
 			{
-				body: JSON.stringify({
+				pathParameters: {
 					id: "1",
-				}),
-			} as any,
+				},
+			} as unknown as APIGatewayProxyEvent,
 			{} as Context
 		);
 
