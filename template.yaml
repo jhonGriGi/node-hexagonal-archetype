@@ -90,7 +90,7 @@ Resources:
                 PutApi:
                     Type: Api
                     Properties:
-                        Path: /products/{id}
+                        Path: /products
                         Method: PUT
 
     # Function for DELETE Products

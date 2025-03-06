@@ -17,9 +17,9 @@ export class MySQL2Config implements DatabaseConfig {
 				password: PASSWORD_DB,
 				port: Number(PORT_DB),
 			});
-			console.log("MySQL connection established.");
+			LambdaLogger.info("MySQL connection established.");
 		} catch (error) {
-			console.error("Unable to connect to MySQL:", error);
+			LambdaLogger.error("Unable to connect to MySQL:", error);
 		}
 	}
 

@@ -1,14 +1,20 @@
-import ProductRepository from '@ports/product-repository'
-import { DeleteProductCommand } from './command'
+import ProductRepository from "@ports/product-repository";
+import { DeleteProductCommand } from "./command";
+import DomainException from "@domain/exceptions/domain-exception";
+import { DOMAIN_ERROR_MESSAGE } from "@domain/constants/constants";
 
 export class DeleteProductCommandHandler {
-  constructor (private readonly repository: ProductRepository) {
-  }
+	constructor(private readonly repository: ProductRepository) {}
 
-  async execute (command: DeleteProductCommand): Promise<string> {
-    const parsedCommand = DeleteProductCommand.parse(command)
-    await this.repository.delete(parsedCommand.id)
+	async execute(command: DeleteProductCommand): Promise<string> {
+		try {
+			await this.repository.delete(command.id);
 
-    return parsedCommand.id
-  }
+			return command.id;
+		} catch (error) {
+			throw new DomainException(
+				error instanceof Error ? error.message : DOMAIN_ERROR_MESSAGE
+			);
+		}
+	}
 }

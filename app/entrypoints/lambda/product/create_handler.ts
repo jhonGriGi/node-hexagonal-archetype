@@ -4,9 +4,10 @@ import { CreateProductCommandHandler } from "@domain/command/create_product/comm
 import LambdaHandlerInterface from "@libraries/lambda-handler-interface";
 import { logger } from "@libraries/logger";
 import { tracer } from "@libraries/tracer";
+import { CreateProductResponse } from "@schemas/products";
 
 export class CreateProductHandler implements LambdaHandlerInterface {
-	constructor(private readonly createProductCommand: CreateProductCommandHandler) {}
+	constructor(private readonly commandHandler: CreateProductCommandHandler) {}
 
 	@tracer.captureLambdaHandler()
 	@logger.injectLambdaContext({ logEvent: false })
@@ -23,11 +24,15 @@ export class CreateProductHandler implements LambdaHandlerInterface {
 					.build();
 			}
 
-			const id = await this.createProductCommand.execute(parsedBody.data);
+			const commandResponse = await this.commandHandler.execute(parsedBody.data);
 			return ApiResponseBuilder.empty()
 				.withStatusCode(200)
 				.withHeaders({ "Content-Type": "application/json" })
-				.withBody({ id })
+				.withBody(
+					CreateProductResponse.safeParse({
+						id: commandResponse,
+					}).data!
+				)
 				.build();
 		} catch (error) {
 			return ApiResponseBuilder.empty()

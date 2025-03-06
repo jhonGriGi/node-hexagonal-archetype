@@ -21,9 +21,9 @@ export class SequelizeConfig implements DatabaseConfig {
 	public async connect(): Promise<void> {
 		try {
 			await this.sequelize.authenticate();
-			console.log("Sequelize connection established.");
+			LambdaLogger.log("Sequelize connection established.");
 		} catch (error) {
-			console.error("Unable to connect to Sequelize:", error);
+			LambdaLogger.error("Unable to connect to Sequelize:", error);
 		}
 	}
 

@@ -4,9 +4,10 @@ import { DeleteProductCommandHandler } from "@domain/command/delete_product/comm
 import LambdaHandlerInterface from "@libraries/lambda-handler-interface";
 import { logger } from "@libraries/logger";
 import { tracer } from "@libraries/tracer";
+import { DeleteProductResponse } from "@schemas/products";
 
 export class DeleteProductHandler implements LambdaHandlerInterface {
-	constructor(private readonly deleteProductCommand: DeleteProductCommandHandler) {}
+	constructor(private readonly commandHandler: DeleteProductCommandHandler) {}
 
 	@tracer.captureLambdaHandler()
 	@logger.injectLambdaContext({ logEvent: false })
@@ -15,18 +16,18 @@ export class DeleteProductHandler implements LambdaHandlerInterface {
 		_context: AWSLambda.Context
 	): Promise<LambdaApiResponse> {
 		try {
-			const parsedBody = DeleteProductCommand.safeParse(JSON.parse(_event.body!));
+			const parsedBody = DeleteProductCommand.safeParse(_event.pathParameters);
 			if (!parsedBody.success) {
 				return ApiResponseBuilder.empty()
 					.withStatusCode(400)
 					.withBody({ errors: parsedBody.error.errors })
 					.build();
 			}
-			const id = await this.deleteProductCommand.execute(parsedBody.data);
+			const commandResponse = await this.commandHandler.execute(parsedBody.data);
 			return ApiResponseBuilder.empty()
 				.withStatusCode(200)
 				.withHeaders({ "Content-Type": "application/json" })
-				.withBody({ id })
+				.withBody(DeleteProductResponse.safeParse({ id: commandResponse }).data!)
 				.build();
 		} catch (error) {
 			return ApiResponseBuilder.empty()

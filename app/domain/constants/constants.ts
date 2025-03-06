@@ -1,4 +1,5 @@
 export const FIRST_POSITION = 0;
+export const DOMAIN_ERROR_MESSAGE = "error en logica de dominio"
 
 export const {
 	POWERTOOLS_SERVICE_NAME,
