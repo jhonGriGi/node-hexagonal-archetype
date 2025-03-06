@@ -14,9 +14,8 @@ export class PrismaConfig implements DatabaseConfig {
 	public async connect(): Promise<void> {
 		try {
 			await this.prisma.$connect();
-			console.log("Prisma connection established.");
 		} catch (error) {
-			console.error("Unable to connect to Prisma:", error);
+			LambdaLogger.error("Unable to connect to Prisma:", error);
 		}
 	}
 

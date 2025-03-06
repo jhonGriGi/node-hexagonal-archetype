@@ -107,7 +107,7 @@ Resources:
                 PutApi:
                     Type: Api
                     Properties:
-                        Path: /products/{id}
+                        Path: /products
                         Method: PUT
         Metadata:
       # Manage esbuild properties
