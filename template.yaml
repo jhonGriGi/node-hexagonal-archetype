@@ -7,8 +7,6 @@ Description: |
 Globals:
     Function:
         Timeout: 3
-        LoggingConfig:
-            LogFormat: JSON
 
     Api:
         Auth:
@@ -46,14 +44,14 @@ Resources:
                         Path: /products
                         Method: GET
         Metadata:
-      # Manage esbuild properties
+            # Manage esbuild properties
             BuildMethod: esbuild
             BuildProperties:
                 Minify: true
                 Target: es2020
                 Sourcemap: true
                 EntryPoints:
-                - app.ts
+                    - app.ts
     # Function for POST Products
     PostProductsFunction:
         Type: AWS::Serverless::Function
@@ -80,15 +78,15 @@ Resources:
                         Path: /products
                         Method: POST
         Metadata:
-      # Manage esbuild properties
+            # Manage esbuild properties
             BuildMethod: esbuild
             BuildProperties:
                 Minify: true
                 Target: es2020
                 Sourcemap: true
                 EntryPoints:
-                - app.ts
-        
+                    - app.ts
+
     # Function for PUT Products
     PutProductsFunction:
         Type: AWS::Serverless::Function
@@ -115,14 +113,14 @@ Resources:
                         Path: /products
                         Method: PUT
         Metadata:
-      # Manage esbuild properties
+            # Manage esbuild properties
             BuildMethod: esbuild
             BuildProperties:
                 Minify: true
                 Target: es2020
                 Sourcemap: true
                 EntryPoints:
-                - app.ts
+                    - app.ts
 
     # Function for DELETE Products
     DeleteProductsFunction:
@@ -150,14 +148,14 @@ Resources:
                         Path: /products/{id}
                         Method: DELETE
         Metadata:
-      # Manage esbuild properties
+            # Manage esbuild properties
             BuildMethod: esbuild
             BuildProperties:
                 Minify: true
                 Target: es2020
                 Sourcemap: true
                 EntryPoints:
-                - app.ts
+                    - app.ts
 
     ApplicationResourceGroup:
         Type: AWS::ResourceGroups::Group
