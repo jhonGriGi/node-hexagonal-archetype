@@ -2,43 +2,47 @@ import ApiResponseBuilder, { LambdaApiResponse } from "@domain/builders/ApiRespo
 import { CreateProductCommand } from "@domain/command/create_product/command";
 import { CreateProductCommandHandler } from "@domain/command/create_product/command_handler";
 import LambdaHandlerInterface from "@libraries/lambda-handler-interface";
-import { logger } from "@libraries/logger";
+import LambdaLogger, { logger } from "@libraries/logger";
 import { tracer } from "@libraries/tracer";
 import { CreateProductResponse } from "@schemas/products";
 
 export class CreateProductHandler implements LambdaHandlerInterface {
-	constructor(private readonly commandHandler: CreateProductCommandHandler) {}
+  constructor(private readonly commandHandler: CreateProductCommandHandler) {
+  }
 
-	@tracer.captureLambdaHandler()
-	@logger.injectLambdaContext({ logEvent: false })
-	public async handler(
-		_event: AWSLambda.APIGatewayProxyEvent,
-		_context: AWSLambda.Context
-	): Promise<LambdaApiResponse> {
-		try {
-			const parsedBody = CreateProductCommand.safeParse(JSON.parse(_event.body!));
-			if (!parsedBody.success) {
-				return ApiResponseBuilder.empty()
-					.withStatusCode(400)
-					.withBody({ errors: parsedBody.error.errors })
-					.build();
-			}
+  @tracer.captureLambdaHandler()
+  @logger.injectLambdaContext({ logEvent: false })
+  public async handler(
+    _event: AWSLambda.APIGatewayProxyEvent,
+    _context: AWSLambda.Context
+  ): Promise<LambdaApiResponse> {
+    try {
+      const parsedBody = CreateProductCommand.safeParse(JSON.parse(_event.body!));
+      if (!parsedBody.success) {
+        return ApiResponseBuilder.empty()
+          .withStatusCode(400)
+          .withBody({ errors: parsedBody.error.errors })
+          .build();
+      }
 
-			const commandResponse = await this.commandHandler.execute(parsedBody.data);
-			return ApiResponseBuilder.empty()
-				.withStatusCode(200)
-				.withHeaders({ "Content-Type": "application/json" })
-				.withBody(
-					CreateProductResponse.safeParse({
-						id: commandResponse,
-					}).data!
-				)
-				.build();
-		} catch (error) {
-			return ApiResponseBuilder.empty()
-				.withStatusCode(400)
-				.withBody({ error: error instanceof Error ? error.message : "Error" })
-				.build();
-		}
-	}
+      const commandResponse = await this.commandHandler.execute(parsedBody.data);
+      return ApiResponseBuilder.empty()
+        .withStatusCode(200)
+        .withHeaders({ "Content-Type": "application/json" })
+        .withBody(
+          CreateProductResponse.safeParse({
+            id: commandResponse
+          }).data!
+        )
+        .build();
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : "Error";
+      LambdaLogger.error(errorMessage);
+
+      return ApiResponseBuilder.empty()
+        .withStatusCode(400)
+        .withBody({ error: errorMessage })
+        .build();
+    }
+  }
 }
