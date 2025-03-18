@@ -1,7 +1,9 @@
 import { DeleteProductCommandHandler } from "@domain/command/delete_product/command_handler";
 import { DeleteProductHandler } from "@lambda/product/delete_handler";
+import { DeleteProductDTO } from "@schemas/products";
+import { Context } from "aws-lambda";
 import { repositoryMock } from "./repository_mock";
-import { APIGatewayProxyEvent, Context } from "aws-lambda";
+import { APIGatewayProxyEvent, ParsedResult } from "@aws-lambda-powertools/parser/types";
 
 const command = new DeleteProductCommandHandler(repositoryMock);
 
@@ -12,13 +14,63 @@ describe("DeleteProductHandler test suit", () => {
 
 	it("should return a success response", async () => {
 		const handler = new DeleteProductHandler(command);
+		const event: DeleteProductDTO = {
+			path: "",
+			pathParameters: {
+				id: "1",
+			},
+			resource: "",
+			httpMethod: "GET",
+			queryStringParameters: null,
+			multiValueQueryStringParameters: null,
+			requestContext: {
+				path: "",
+				httpMethod: "GET",
+				accountId: "",
+				apiId: "",
+				stage: "",
+				protocol: "",
+				identity: {
+					accessKey: undefined,
+					accountId: undefined,
+					apiKey: undefined,
+					apiKeyId: undefined,
+					caller: undefined,
+					cognitoAuthenticationProvider: undefined,
+					cognitoAuthenticationType: undefined,
+					cognitoIdentityId: undefined,
+					cognitoIdentityPoolId: undefined,
+					principalOrgId: undefined,
+					sourceIp: undefined,
+					user: undefined,
+					userAgent: undefined,
+					userArn: undefined,
+					clientCert: undefined,
+				},
+				requestId: "",
+				requestTime: "",
+				requestTimeEpoch: 0,
+				resourcePath: "",
+				deploymentId: undefined,
+				authorizer: undefined,
+				resourceId: undefined,
+				domainName: undefined,
+				domainPrefix: undefined,
+				extendedRequestId: undefined,
+				connectedAt: undefined,
+				connectionId: undefined,
+				eventType: undefined,
+				messageDirection: undefined,
+				messageId: undefined,
+				routeKey: undefined,
+				operationName: undefined,
+			},
+			body: null,
+			isBase64Encoded: false,
+		};
 
 		const response = await handler.handler(
-			{
-				pathParameters: {
-					id: "1",
-				},
-			} as unknown as APIGatewayProxyEvent,
+			event as unknown as ParsedResult<APIGatewayProxyEvent, DeleteProductDTO>,
 			{} as Context
 		);
 
@@ -42,8 +94,65 @@ describe("DeleteProductHandler test suit", () => {
 		});
 
 		const handler = new DeleteProductHandler(command);
+		const event: DeleteProductDTO = {
+			path: "",
+			pathParameters: {
+				id: "1",
+			},
+			resource: "",
+			httpMethod: "GET",
+			queryStringParameters: null,
+			multiValueQueryStringParameters: null,
+			requestContext: {
+				path: "",
+				httpMethod: "GET",
+				accountId: "",
+				apiId: "",
+				stage: "",
+				protocol: "",
+				identity: {
+					accessKey: undefined,
+					accountId: undefined,
+					apiKey: undefined,
+					apiKeyId: undefined,
+					caller: undefined,
+					cognitoAuthenticationProvider: undefined,
+					cognitoAuthenticationType: undefined,
+					cognitoIdentityId: undefined,
+					cognitoIdentityPoolId: undefined,
+					principalOrgId: undefined,
+					sourceIp: undefined,
+					user: undefined,
+					userAgent: undefined,
+					userArn: undefined,
+					clientCert: undefined,
+				},
+				requestId: "",
+				requestTime: "",
+				requestTimeEpoch: 0,
+				resourcePath: "",
+				deploymentId: undefined,
+				authorizer: undefined,
+				resourceId: undefined,
+				domainName: undefined,
+				domainPrefix: undefined,
+				extendedRequestId: undefined,
+				connectedAt: undefined,
+				connectionId: undefined,
+				eventType: undefined,
+				messageDirection: undefined,
+				messageId: undefined,
+				routeKey: undefined,
+				operationName: undefined,
+			},
+			body: null,
+			isBase64Encoded: false,
+		};
 
-		const response = await handler.handler({} as any, {} as Context);
+		const response = await handler.handler(
+			event as unknown as ParsedResult<APIGatewayProxyEvent, DeleteProductDTO>,
+			{} as Context
+		);
 
 		expect(response.statusCode).toBe(400);
 		expect(response.body).toBeDefined();

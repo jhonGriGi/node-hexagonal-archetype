@@ -1,43 +1,44 @@
+import { parser } from "@aws-lambda-powertools/parser";
+import { APIGatewayProxyEvent, ParsedResult } from "@aws-lambda-powertools/parser/types";
 import ApiResponseBuilder, { LambdaApiResponse } from "@domain/builders/ApiResponseBuilder";
-import { DeleteProductCommand } from "@domain/command/delete_product/command";
 import { DeleteProductCommandHandler } from "@domain/command/delete_product/command_handler";
 import LambdaHandlerInterface from "@libraries/lambda-handler-interface";
 import LambdaLogger, { logger } from "@libraries/logger";
 import { tracer } from "@libraries/tracer";
-import { DeleteProductResponse } from "@schemas/products";
+import { DeleteProductDTO, DeleteProductResponse, DeleteProductSchema } from "@schemas/products";
 
 export class DeleteProductHandler implements LambdaHandlerInterface {
-  constructor(private readonly commandHandler: DeleteProductCommandHandler) {
-  }
+	constructor(private readonly commandHandler: DeleteProductCommandHandler) {}
 
-  @tracer.captureLambdaHandler()
-  @logger.injectLambdaContext({ logEvent: false })
-  public async handler(
-    _event: AWSLambda.APIGatewayProxyEvent,
-    _context: AWSLambda.Context
-  ): Promise<LambdaApiResponse> {
-    try {
-      const parsedBody = DeleteProductCommand.safeParse(_event.pathParameters);
-      if (!parsedBody.success) {
-        return ApiResponseBuilder.empty()
-          .withStatusCode(400)
-          .withBody({ errors: parsedBody.error.errors })
-          .build();
-      }
-      const commandResponse = await this.commandHandler.execute(parsedBody.data);
-      return ApiResponseBuilder.empty()
-        .withStatusCode(200)
-        .withHeaders({ "Content-Type": "application/json" })
-        .withBody(DeleteProductResponse.safeParse({ id: commandResponse }).data!)
-        .build();
-    } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : "Error";
-      LambdaLogger.error(errorMessage);
+	@tracer.captureLambdaHandler()
+	@logger.injectLambdaContext({ logEvent: false })
+	@parser({ schema: DeleteProductSchema, safeParse: true })
+	public async handler(
+		_event: ParsedResult<APIGatewayProxyEvent, DeleteProductDTO>,
+		_context: AWSLambda.Context
+	): Promise<LambdaApiResponse> {
+		try {
+			if (!_event.success) {
+				return ApiResponseBuilder.empty()
+					.withStatusCode(400)
+					.withHeaders({ "Content-Type": "application/json" })
+					.withBody(_event)
+					.build();
+			}
+			const commandResponse = await this.commandHandler.execute(_event.data.pathParameters);
+			return ApiResponseBuilder.empty()
+				.withStatusCode(200)
+				.withHeaders({ "Content-Type": "application/json" })
+				.withBody<DeleteProductResponse>({ id: commandResponse })
+				.build();
+		} catch (error) {
+			const errorMessage = error instanceof Error ? error.message : "Error";
+			LambdaLogger.error(errorMessage);
 
-      return ApiResponseBuilder.empty()
-        .withStatusCode(400)
-        .withBody({ error: errorMessage })
-        .build();
-    }
-  }
+			return ApiResponseBuilder.empty()
+				.withStatusCode(400)
+				.withBody({ error: errorMessage })
+				.build();
+		}
+	}
 }

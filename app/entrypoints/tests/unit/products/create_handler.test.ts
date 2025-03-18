@@ -2,6 +2,10 @@ import { CreateProductCommandHandler } from "@domain/command/create_product/comm
 import { CreateProductHandler } from "@lambda/product/create_handler";
 import { repositoryMock } from "./repository_mock";
 import { Context } from "aws-lambda";
+import { CreateProductDTO } from "@schemas/products";
+import { readFile } from "fs/promises";
+import path from "path";
+import { APIGatewayProxyEvent, ParsedResult } from "@aws-lambda-powertools/parser/types";
 
 const command = new CreateProductCommandHandler(repositoryMock);
 
@@ -12,14 +16,63 @@ describe("CreateProductHandler test suit", () => {
 
 	it("should return a success response", async () => {
 		const handler = new CreateProductHandler(command);
+		const event: CreateProductDTO = {
+			path: "",
+			body: {
+				name: "mock name",
+				description: "mock description",
+			},
+			resource: "",
+			httpMethod: "GET",
+			queryStringParameters: null,
+			multiValueQueryStringParameters: null,
+			requestContext: {
+				path: "",
+				httpMethod: "GET",
+				accountId: "",
+				apiId: "",
+				stage: "",
+				protocol: "",
+				identity: {
+					accessKey: undefined,
+					accountId: undefined,
+					apiKey: undefined,
+					apiKeyId: undefined,
+					caller: undefined,
+					cognitoAuthenticationProvider: undefined,
+					cognitoAuthenticationType: undefined,
+					cognitoIdentityId: undefined,
+					cognitoIdentityPoolId: undefined,
+					principalOrgId: undefined,
+					sourceIp: undefined,
+					user: undefined,
+					userAgent: undefined,
+					userArn: undefined,
+					clientCert: undefined,
+				},
+				requestId: "",
+				requestTime: "",
+				requestTimeEpoch: 0,
+				resourcePath: "",
+				deploymentId: undefined,
+				authorizer: undefined,
+				resourceId: undefined,
+				domainName: undefined,
+				domainPrefix: undefined,
+				extendedRequestId: undefined,
+				connectedAt: undefined,
+				connectionId: undefined,
+				eventType: undefined,
+				messageDirection: undefined,
+				messageId: undefined,
+				routeKey: undefined,
+				operationName: undefined,
+			},
+			isBase64Encoded: false,
+		};
 
 		const response = await handler.handler(
-			{
-				body: JSON.stringify({
-					name: "mock name",
-					description: "mock description",
-				}),
-			} as any,
+			event as unknown as ParsedResult<APIGatewayProxyEvent, CreateProductDTO>,
 			{} as Context
 		);
 
@@ -43,14 +96,63 @@ describe("CreateProductHandler test suit", () => {
 		});
 
 		const handler = new CreateProductHandler(command);
+		const event: CreateProductDTO = {
+			path: "",
+			body: {
+				name: "mock name",
+				description: "mock description",
+			},
+			resource: "",
+			httpMethod: "GET",
+			queryStringParameters: null,
+			multiValueQueryStringParameters: null,
+			requestContext: {
+				path: "",
+				httpMethod: "GET",
+				accountId: "",
+				apiId: "",
+				stage: "",
+				protocol: "",
+				identity: {
+					accessKey: undefined,
+					accountId: undefined,
+					apiKey: undefined,
+					apiKeyId: undefined,
+					caller: undefined,
+					cognitoAuthenticationProvider: undefined,
+					cognitoAuthenticationType: undefined,
+					cognitoIdentityId: undefined,
+					cognitoIdentityPoolId: undefined,
+					principalOrgId: undefined,
+					sourceIp: undefined,
+					user: undefined,
+					userAgent: undefined,
+					userArn: undefined,
+					clientCert: undefined,
+				},
+				requestId: "",
+				requestTime: "",
+				requestTimeEpoch: 0,
+				resourcePath: "",
+				deploymentId: undefined,
+				authorizer: undefined,
+				resourceId: undefined,
+				domainName: undefined,
+				domainPrefix: undefined,
+				extendedRequestId: undefined,
+				connectedAt: undefined,
+				connectionId: undefined,
+				eventType: undefined,
+				messageDirection: undefined,
+				messageId: undefined,
+				routeKey: undefined,
+				operationName: undefined,
+			},
+			isBase64Encoded: false,
+		};
 
 		const response = await handler.handler(
-			{
-				body: JSON.stringify({
-					name: "mock name",
-					description: "mock description",
-				}),
-			} as any,
+			event as unknown as ParsedResult<APIGatewayProxyEvent, CreateProductDTO>,
 			{} as Context
 		);
 

@@ -30,7 +30,7 @@
     },
     "devDependencies": {
         "@jest/globals": "^29.2.0",
-        "@types/aws-lambda": "^8.10.92",
+        "@types/aws-lambda": "^8.10.147",
         "@types/aws-serverless-express": "^3.3.10",
         "@types/express": "^5.0.0",
         "@types/jest": "^29.2.0",

@@ -10,7 +10,7 @@ export class DatabaseDriverRepository implements ProductRepository {
     this.dbConfig = dbConfig;
   }
 
-  public async list(): Promise<Product[] | null> {
+  public async list(): Promise<Product[]> {
     await this.dbConfig.connect();
 
     const query = "SELECT * FROM products";
@@ -51,7 +51,7 @@ export class DatabaseDriverRepository implements ProductRepository {
     await this.dbConfig.disconnect();
   }
 
-  public async get(productId: string): Promise<Product | null> {
+  public async get(productId: string): Promise<Product> {
     await this.dbConfig.connect();
 
     const query = "SELECT * FROM products WHERE products.id = ?";

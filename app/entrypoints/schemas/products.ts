@@ -1,3 +1,5 @@
+import { APIGatewayProxyEventSchema } from "@aws-lambda-powertools/parser/schemas";
+
 import { z } from "zod";
 
 export const GetProductsResponse = z.object({
@@ -22,12 +24,13 @@ export const GetAllProductsResponse = z.array(
 
 export type GetAllProductsResponse = z.infer<typeof GetAllProductsResponse>;
 
-export const GetProductRequest = z.object({
-	name: z.string().min(1),
-	description: z.string().min(1),
+export const GetProductSchema = APIGatewayProxyEventSchema.extend({
+	pathParameters: z.object({
+		id: z.string().optional(),
+	}),
 });
 
-export type GetProductRequest = z.infer<typeof GetProductRequest>;
+export type GetProductDTO = z.infer<typeof GetProductSchema>;
 
 export const CreateProductResponse = z.object({
 	id: z.string().min(1).uuid(),
@@ -35,12 +38,24 @@ export const CreateProductResponse = z.object({
 
 export type CreateProductResponse = z.infer<typeof CreateProductResponse>;
 
-export const UpdateProductRequest = z.object({
-	name: z.string().min(1),
-	description: z.string().min(1),
+export const CreateProductSchema = APIGatewayProxyEventSchema.extend({
+	body: z.object({
+		name: z.string().min(1),
+		description: z.string().min(1),
+	}),
 });
 
-export type UpdateProductRequest = z.infer<typeof UpdateProductRequest>;
+export type CreateProductDTO = z.infer<typeof CreateProductSchema>;
+
+export const UpdateProductSchema = APIGatewayProxyEventSchema.extend({
+	body: z.object({
+		id: z.string().min(1),
+		name: z.string().min(1),
+		description: z.string().min(1),
+	}),
+});
+
+export type UpdateProductDTO = z.infer<typeof UpdateProductSchema>;
 
 export const UpdateProductResponse = z.object({
 	id: z.string().min(1),
@@ -53,3 +68,11 @@ export const DeleteProductResponse = z.object({
 });
 
 export type DeleteProductResponse = z.infer<typeof DeleteProductResponse>;
+
+export const DeleteProductSchema = APIGatewayProxyEventSchema.extend({
+	pathParameters: z.object({
+		id: z.string().min(1),
+	}),
+});
+
+export type DeleteProductDTO = z.infer<typeof DeleteProductSchema>;

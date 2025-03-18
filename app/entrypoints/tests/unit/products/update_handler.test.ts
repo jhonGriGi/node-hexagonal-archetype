@@ -1,7 +1,9 @@
+import { APIGatewayProxyEvent, ParsedResult } from "@aws-lambda-powertools/parser/types";
 import { UpdateProductCommandHandler } from "@domain/command/update_product/command_handler";
-import { repositoryMock } from "./repository_mock";
 import { UpdateProductHandler } from "@lambda/product/update_handler";
+import { UpdateProductDTO } from "@schemas/products";
 import { Context } from "aws-lambda";
+import { repositoryMock } from "./repository_mock";
 
 const command = new UpdateProductCommandHandler(repositoryMock);
 
@@ -12,15 +14,64 @@ describe("UpdateProductHandler test suit", () => {
 
 	it("should return a success response", async () => {
 		const handler = new UpdateProductHandler(command);
+		const event: UpdateProductDTO = {
+			path: "",
+			body: {
+				id: "1",
+				name: "mock name",
+				description: "mock description",
+			},
+			resource: "",
+			httpMethod: "GET",
+			queryStringParameters: null,
+			multiValueQueryStringParameters: null,
+			requestContext: {
+				path: "",
+				httpMethod: "GET",
+				accountId: "",
+				apiId: "",
+				stage: "",
+				protocol: "",
+				identity: {
+					accessKey: undefined,
+					accountId: undefined,
+					apiKey: undefined,
+					apiKeyId: undefined,
+					caller: undefined,
+					cognitoAuthenticationProvider: undefined,
+					cognitoAuthenticationType: undefined,
+					cognitoIdentityId: undefined,
+					cognitoIdentityPoolId: undefined,
+					principalOrgId: undefined,
+					sourceIp: undefined,
+					user: undefined,
+					userAgent: undefined,
+					userArn: undefined,
+					clientCert: undefined,
+				},
+				requestId: "",
+				requestTime: "",
+				requestTimeEpoch: 0,
+				resourcePath: "",
+				deploymentId: undefined,
+				authorizer: undefined,
+				resourceId: undefined,
+				domainName: undefined,
+				domainPrefix: undefined,
+				extendedRequestId: undefined,
+				connectedAt: undefined,
+				connectionId: undefined,
+				eventType: undefined,
+				messageDirection: undefined,
+				messageId: undefined,
+				routeKey: undefined,
+				operationName: undefined,
+			},
+			isBase64Encoded: false,
+		};
 
 		const response = await handler.handler(
-			{
-				body: JSON.stringify({
-					id: "1",
-					name: "mock name",
-					description: "mock description",
-				}),
-			} as any,
+			event as unknown as ParsedResult<APIGatewayProxyEvent, UpdateProductDTO>,
 			{} as Context
 		);
 
@@ -44,8 +95,66 @@ describe("UpdateProductHandler test suit", () => {
 		});
 
 		const handler = new UpdateProductHandler(command);
+		const event: UpdateProductDTO = {
+			path: "",
+			body: {
+				id: "1",
+				name: "mock name",
+				description: "mock description",
+			},
+			resource: "",
+			httpMethod: "GET",
+			queryStringParameters: null,
+			multiValueQueryStringParameters: null,
+			requestContext: {
+				path: "",
+				httpMethod: "GET",
+				accountId: "",
+				apiId: "",
+				stage: "",
+				protocol: "",
+				identity: {
+					accessKey: undefined,
+					accountId: undefined,
+					apiKey: undefined,
+					apiKeyId: undefined,
+					caller: undefined,
+					cognitoAuthenticationProvider: undefined,
+					cognitoAuthenticationType: undefined,
+					cognitoIdentityId: undefined,
+					cognitoIdentityPoolId: undefined,
+					principalOrgId: undefined,
+					sourceIp: undefined,
+					user: undefined,
+					userAgent: undefined,
+					userArn: undefined,
+					clientCert: undefined,
+				},
+				requestId: "",
+				requestTime: "",
+				requestTimeEpoch: 0,
+				resourcePath: "",
+				deploymentId: undefined,
+				authorizer: undefined,
+				resourceId: undefined,
+				domainName: undefined,
+				domainPrefix: undefined,
+				extendedRequestId: undefined,
+				connectedAt: undefined,
+				connectionId: undefined,
+				eventType: undefined,
+				messageDirection: undefined,
+				messageId: undefined,
+				routeKey: undefined,
+				operationName: undefined,
+			},
+			isBase64Encoded: false,
+		};
 
-		const response = await handler.handler({} as any, {} as Context);
+		const response = await handler.handler(
+			event as unknown as ParsedResult<APIGatewayProxyEvent, UpdateProductDTO>,
+			{} as Context
+		);
 
 		expect(response.statusCode).toBe(400);
 		expect(response.body).toBeDefined();
