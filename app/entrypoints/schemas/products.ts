@@ -27,7 +27,7 @@ export type GetAllProductsResponse = z.infer<typeof GetAllProductsResponse>;
 export const GetProductSchema = APIGatewayProxyEventSchema.extend({
 	pathParameters: z.object({
 		id: z.string().optional(),
-	}),
+	}).optional().nullable(),
 });
 
 export type GetProductDTO = z.infer<typeof GetProductSchema>;
@@ -38,23 +38,18 @@ export const CreateProductResponse = z.object({
 
 export type CreateProductResponse = z.infer<typeof CreateProductResponse>;
 
-export const CreateProductSchema = APIGatewayProxyEventSchema.extend({
-	body: z.object({
-		name: z.string().min(1),
-		description: z.string().min(1),
-	}),
+export const CreateProductSchema = z.object({
+	name: z.string().min(1),
+	description: z.string().min(1),
 });
 
 export type CreateProductDTO = z.infer<typeof CreateProductSchema>;
 
-export const UpdateProductSchema = APIGatewayProxyEventSchema.extend({
-	body: z.object({
-		id: z.string().min(1),
-		name: z.string().min(1),
-		description: z.string().min(1),
-	}),
-});
-
+export const UpdateProductSchema = z.object({
+	id: z.string().min(1),
+	name: z.string().min(1),
+	description: z.string().min(1),
+})
 export type UpdateProductDTO = z.infer<typeof UpdateProductSchema>;
 
 export const UpdateProductResponse = z.object({
