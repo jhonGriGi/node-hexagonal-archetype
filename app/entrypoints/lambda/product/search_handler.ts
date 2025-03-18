@@ -1,13 +1,13 @@
 import ApiResponseBuilder, { LambdaApiResponse } from "@domain/builders/ApiResponseBuilder";
-import { SearchProductCommand } from "@domain/command/search_product/command";
-import { SearchProductCommandHandler } from "@domain/command/search_product/command_handler";
+import { SearchProductQuery } from "@domain/queries/search_product/query";
+import { SearchProductQueryHandler } from "@domain/queries/search_product/query_handler";
 import LambdaHandlerInterface from "@libraries/lambda-handler-interface";
 import LambdaLogger, { logger } from "@libraries/logger";
 import { tracer } from "@libraries/tracer";
 import { GetAllProductsResponse, GetProductsResponse } from "@schemas/products";
 
 export class SearchProductHandler implements LambdaHandlerInterface {
-  constructor(private readonly commandHandler: SearchProductCommandHandler) {
+  constructor(private readonly commandHandler: SearchProductQueryHandler) {
   }
 
   @tracer.captureLambdaHandler()
@@ -17,7 +17,7 @@ export class SearchProductHandler implements LambdaHandlerInterface {
     _context: AWSLambda.Context
   ): Promise<LambdaApiResponse> {
     try {
-      const parsedBody = SearchProductCommand.safeParse(_event.pathParameters).data;
+      const parsedBody = SearchProductQuery.safeParse(_event.pathParameters).data;
 
       const commandResponse = await this.commandHandler.execute({
         id: parsedBody?.id

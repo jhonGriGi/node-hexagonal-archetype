@@ -1,8 +1,8 @@
 import { DatabaseDriverRepository } from "@adapters/database-driver-repository";
 import { CreateProductCommandHandler } from "@domain/command/create_product/command_handler";
 import { DeleteProductCommandHandler } from "@domain/command/delete_product/command_handler";
-import { SearchProductCommandHandler } from "@domain/command/search_product/command_handler";
 import { UpdateProductCommandHandler } from "@domain/command/update_product/command_handler";
+import { SearchProductQueryHandler } from "@domain/queries/search_product/query_handler";
 import { CreateProductHandler } from "@lambda/product/create_handler";
 import { DeleteProductHandler } from "@lambda/product/delete_handler";
 import { SearchProductHandler } from "@lambda/product/search_handler";
@@ -15,25 +15,25 @@ const repository = new DatabaseDriverRepository(databaseConfig);
 
 // Export Lambda handlers
 export const postProductsHandler = createHandler(
-	CreateProductCommandHandler,
-	CreateProductHandler,
-	repository
+  CreateProductCommandHandler,
+  CreateProductHandler,
+  repository
 );
 
 export const deleteProductsHandler = createHandler(
-	DeleteProductCommandHandler,
-	DeleteProductHandler,
-	repository
+  DeleteProductCommandHandler,
+  DeleteProductHandler,
+  repository
 );
 
 export const putProductsHandler = createHandler(
-	UpdateProductCommandHandler,
-	UpdateProductHandler,
-	repository
+  UpdateProductCommandHandler,
+  UpdateProductHandler,
+  repository
 );
 
 export const getProductsHandler = createHandler(
-	SearchProductCommandHandler,
-	SearchProductHandler,
-	repository
+  SearchProductQueryHandler,
+  SearchProductHandler,
+  repository
 );

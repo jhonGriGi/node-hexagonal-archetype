@@ -1,7 +1,7 @@
 import { z } from "zod";
 
-export const SearchProductCommand = z.object({
-	id: z.string().optional(),
+export const SearchProductQuery = z.object({
+  id: z.string().optional()
 });
 
-export type SearchProductCommand = z.infer<typeof SearchProductCommand>;
+export type SearchProductQuery = z.infer<typeof SearchProductQuery>;
