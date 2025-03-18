@@ -10,7 +10,7 @@ export class SearchProductQueryHandler {
 
   async execute(command: SearchProductQuery): Promise<Product[] | Product> {
     try {
-      return command.id
+      return (command && command.id)
         ? await this.repository.get(command.id)
         : await this.repository.list();
 

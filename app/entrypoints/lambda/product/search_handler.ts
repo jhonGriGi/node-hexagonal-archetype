@@ -6,10 +6,8 @@ import LambdaHandlerInterface from "@libraries/lambda-handler-interface";
 import LambdaLogger, { logger } from "@libraries/logger";
 import { tracer } from "@libraries/tracer";
 import {
-	GetAllProductsResponse,
 	GetProductDTO,
 	GetProductSchema,
-	GetProductsResponse,
 } from "@schemas/products";
 
 export class SearchProductHandler implements LambdaHandlerInterface {
@@ -31,7 +29,7 @@ export class SearchProductHandler implements LambdaHandlerInterface {
 					.build();
 			}
 
-			const commandResponse = await this.commandHandler.execute(_event.data.pathParameters);
+			const commandResponse = await this.commandHandler.execute(_event.data.pathParameters!);
 
 			if (typeof commandResponse === null) {
 				return ApiResponseBuilder.empty()

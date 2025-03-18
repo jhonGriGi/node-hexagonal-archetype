@@ -1,4 +1,5 @@
 import { parser } from "@aws-lambda-powertools/parser";
+import { ApiGatewayEnvelope } from "@aws-lambda-powertools/parser/envelopes";
 import type { APIGatewayProxyEvent, ParsedResult } from "@aws-lambda-powertools/parser/types";
 import ApiResponseBuilder, { LambdaApiResponse } from "@domain/builders/ApiResponseBuilder";
 import { UpdateProductCommandHandler } from "@domain/command/update_product/command_handler";
@@ -12,20 +13,14 @@ export class UpdateProductHandler implements LambdaHandlerInterface {
 
 	@tracer.captureLambdaHandler()
 	@logger.injectLambdaContext({ logEvent: false })
-	@parser({ schema: UpdateProductSchema, safeParse: true })
 	public async handler(
-		_event: ParsedResult<APIGatewayProxyEvent, UpdateProductDTO>,
+		_event: APIGatewayProxyEvent,
 		_context: AWSLambda.Context
 	): Promise<LambdaApiResponse> {
 		try {
-			if (!_event.success) {
-				return ApiResponseBuilder.empty()
-					.withStatusCode(400)
-					.withHeaders({ "Content-Type": "application/json" })
-					.withBody(_event)
-					.build();
-			}
-			const commandResponse = await this.commandHandler.execute(_event.data.body);
+			const event = { ..._event, body: JSON.parse(_event.body!) };
+			const updateProductParsed: UpdateProductDTO = ApiGatewayEnvelope.parse(event, UpdateProductSchema);
+			const commandResponse = await this.commandHandler.execute(updateProductParsed);
 			return ApiResponseBuilder.empty()
 				.withStatusCode(200)
 				.withHeaders({ "Content-Type": "application/json" })
