@@ -11,11 +11,11 @@ const command = new CreateProductCommandHandler(repositoryMock);
 
 describe("CreateProductHandler test suit", () => {
 	const event: CreateProductDTO = {
-		path: "",
 		body: {
 			name: "mock name",
 			description: "mock description",
 		},
+		path: "",
 		resource: "",
 		httpMethod: "GET",
 		queryStringParameters: null,
