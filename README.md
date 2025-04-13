@@ -14,6 +14,33 @@ de tu aplicación
 
 ## Instalación
 
+Puedes usar un script de instalacion que clonara el repositorio, eliminara el registro de git e instalara las dependencias
+usando el gesto de paquetes de tu gusto
+
+Tenemos que pasar 2 argumentos:
+1. Carpeta destino.
+2. Gestor de paquetes: npm, yarn o pnpm (obligatorio).
+
+### Uso:
+- Carpeta actual usando npm usando el directorio actual pasando el argumento con punto (.):
+
+```bash
+bash <(curl -s ) . npm
+```
+
+- Nueva carpeta mi-app usando pnpm:
+
+```bash
+bash <(curl -s ) mi-app pnpm
+```
+
+- Si olvidas el gestor, te muestra el error:
+
+```bash
+bash <(curl -s )
+# Error: Debes especificar el gestor de paquetes (npm, yarn o pnpm)
+```
+
 Para la instalación del proyecto primero debes clonar el repositorio
 
 ```bash
