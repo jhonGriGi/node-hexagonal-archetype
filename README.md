@@ -25,19 +25,19 @@ Tenemos que pasar 2 argumentos:
 - Carpeta actual usando npm usando el directorio actual pasando el argumento con punto (.):
 
 ```bash
-bash <(curl -s ) . npm
+bash <(curl -s https://raw.githubusercontent.com/jhonGriGi/node-hexagonal-archetype/refs/heads/main/install-script.bash) . npm
 ```
 
 - Nueva carpeta mi-app usando pnpm:
 
 ```bash
-bash <(curl -s ) mi-app pnpm
+bash <(curl -s https://raw.githubusercontent.com/jhonGriGi/node-hexagonal-archetype/refs/heads/main/install-script.bash) mi-app pnpm
 ```
 
 - Si olvidas el gestor, te muestra el error:
 
 ```bash
-bash <(curl -s )
+bash <(curl -s https://raw.githubusercontent.com/jhonGriGi/node-hexagonal-archetype/refs/heads/main/install-script.bash)
 # Error: Debes especificar el gestor de paquetes (npm, yarn o pnpm)
 ```
 
