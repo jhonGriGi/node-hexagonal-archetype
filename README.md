@@ -41,7 +41,7 @@ bash <(curl -s https://raw.githubusercontent.com/jhonGriGi/node-hexagonal-archet
 # Error: Debes especificar el gestor de paquetes (npm, yarn o pnpm)
 ```
 
-Para la instalación del proyecto primero debes clonar el repositorio
+**Para la instalación manual** del proyecto primero debes clonar el repositorio
 
 ```bash
   git clone https://github.com/jhonGriGi/node-hexagonal-archetype.git
