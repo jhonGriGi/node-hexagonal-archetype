@@ -22,16 +22,10 @@ Tenemos que pasar 2 argumentos:
 2. Gestor de paquetes: npm, yarn o pnpm (obligatorio).
 
 ### Uso:
-- Carpeta actual usando npm usando el directorio actual pasando el argumento con punto (.):
+- Para usar el script usa el siguiente comando en bash:
 
 ```bash
-bash <(curl -s https://raw.githubusercontent.com/jhonGriGi/node-hexagonal-archetype/refs/heads/main/install-script.bash) . npm
-```
-
-- Nueva carpeta mi-app usando pnpm:
-
-```bash
-bash <(curl -s https://raw.githubusercontent.com/jhonGriGi/node-hexagonal-archetype/refs/heads/main/install-script.bash) mi-app pnpm
+bash <(curl -s https://raw.githubusercontent.com/jhonGriGi/node-hexagonal-archetype/refs/heads/main/install-script.bash)
 ```
 
 - Si olvidas el gestor, te muestra el error:

@@ -1,67 +1,55 @@
 #!/bin/bash
 
-# URL del arquetipo (quemada en el script)
+set -e  # Detiene la ejecución si hay un error
+
 REPO_URL="https://github.com/jhonGriGi/node-hexagonal-archetype"
 
-echo "🔧 Carpeta de proyecto o puedes usar la actual usando (.)"
-read PROJECT_FOLDER
-PROJECT_FOLDER=${PROJECT_FOLDER:-.} # Usa '.' si el usuario no escribe nada
+echo "🔧 Carpeta de proyecto (usa '.' para usar la actual)"
+read -r PROJECT_FOLDER
+PROJECT_FOLDER=${PROJECT_FOLDER:-.}
 
 if [ "$PROJECT_FOLDER" != "." ]; then
-  echo "Creando directorio $PROJECT_FOLDER..."
+  echo "📁 Creando directorio $PROJECT_FOLDER..."
   mkdir -p "$PROJECT_FOLDER"
   cd "$PROJECT_FOLDER" || exit 1
 fi
 
-# Package Manager
 echo "🔧 Package Manager para el proyecto [npm, pnpm, yarn]"
-read PACKAGE_MANAGER
+read -r PACKAGE_MANAGER
 
-# Validar package manager
 if [[ "$PACKAGE_MANAGER" != "npm" && "$PACKAGE_MANAGER" != "pnpm" && "$PACKAGE_MANAGER" != "yarn" ]]; then
   echo "❌ Package manager inválido. Debe ser npm, pnpm o yarn. Saliendo..."
   exit 1
 fi
 
-# Nuevo remote origin (opcional)
 echo "🔧 Nuevo remote origin de git (opcional, deja vacío si no quieres configurarlo)"
-read REMOTE_ORIGIN
+read -r REMOTE_ORIGIN
 
-# Limpiar repositorio git actual si existe
-DEFAULT_GIT_DIR="./.git"
-if [ -d "$DEFAULT_GIT_DIR" ]; then
-  rm -rf "$DEFAULT_GIT_DIR"
+# Limpiar .git si existe
+if [ -d .git ]; then
+  echo "🧹 Eliminando repositorio Git existente..."
+  rm -rf .git
 fi
 
-echo "Clonando repositorio en $(pwd)..."
-git clone "$REPO_URL" . 
+echo "📥 Clonando repositorio en carpeta temporal..."
+TMP_DIR=$(mktemp -d)
+git clone "$REPO_URL" "$TMP_DIR"
 
-echo "Eliminando remote origin de arquetipo"
-git remote remove origin
+echo "📦 Copiando archivos al directorio actual..."
+cp -r "$TMP_DIR"/* "$TMP_DIR"/.??* . 2>/dev/null || true
+rm -rf "$TMP_DIR"
 
-echo "Borrando historial de commits de arquetipo"
-rm -rf .git
+echo "🔃 Re-inicializando git..."
 git init
 
-# Si el usuario definió un remote origin, lo añadimos
 if [ -n "$REMOTE_ORIGIN" ]; then
-  echo "Agregando nuevo remote origin: $REMOTE_ORIGIN"
+  echo "🔗 Agregando remote origin: $REMOTE_ORIGIN"
   git remote add origin "$REMOTE_ORIGIN"
 else
-  echo "No se configuró remote origin."
+  echo "ℹ️ No se configuró remote origin."
 fi
 
-echo "Instalando dependencias usando $PACKAGE_MANAGER..."
-case "$PACKAGE_MANAGER" in
-  npm)
-    npm install
-    ;;
-  yarn)
-    yarn install
-    ;;
-  pnpm)
-    pnpm install
-    ;;
-esac
+echo "📦 Instalando dependencias con $PACKAGE_MANAGER..."
+$PACKAGE_MANAGER install
 
 echo "✅ Proyecto listo en $(pwd)."
