@@ -41,10 +41,13 @@ rm -rf "$TMP_DIR"
 
 echo "🔃 Re-inicializando git..."
 git init
+git remote remove origin
 
 if [ -n "$REMOTE_ORIGIN" ]; then
   echo "🔗 Agregando remote origin: $REMOTE_ORIGIN"
   git remote add origin "$REMOTE_ORIGIN"
+
+  echo "El remote origin actual es: $(git remote get-url origin)"
 else
   echo "ℹ️ No se configuró remote origin."
 fi
