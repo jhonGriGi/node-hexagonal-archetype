@@ -1,6 +1,7 @@
 # Arquetipo NodeJs - Arquitectura limpia Amazon
 
-Aplicación serverless con SAM para la creación de distintas lambdas en las cuentas
+Aplicación serverless con SAM para la creación de distintas lambdas en las cuentas.
+Este proyecto es un arquetipo base pensado para servir como punto de partida. Los usuarios tienen total libertad para personalizarlo, agregar o eliminar funcionalidades según las necesidades específicas de sus proyectos. Siéntete libre de adaptarlo a tu propio flujo de trabajo.
 
 ## Requisitos de sistema
 
@@ -37,20 +38,36 @@ bash <(curl -s https://raw.githubusercontent.com/jhonGriGi/node-hexagonal-archet
 # Error: Debes especificar el gestor de paquetes (npm, yarn o pnpm)
 ```
 
-**Para la instalación manual** del proyecto primero debes clonar el repositorio
+## Instalacion manual y configuracion de arquetipo
+
+1. Clonar el repositorio e ingresar a la carpeta
 
 ```bash
-  git clone https://github.com/jhonGriGi/node-hexagonal-archetype.git
-  cd node-hexagonal-archetype
-  npm install
+git clone https://github.com/jhonGriGi/node-hexagonal-archetype.git <nombre_carpeta>
+cd <nombre_carpeta>
 ```
 
-### Configurar Git con nuevo repositorio
-
-Para cambiar la url del repositorio remoto del arquetipo puedes ejecutar lo siguiente
+2. Eliminar el .git del arquetipo
 
 ```bash
-git remote set-url origin git://new.url.here
+rm -rf .git
+```
+
+```powershell
+Remove-Item -Path ".git" -Recurse -Force
+```
+
+3. Inicializar nuevo repositorio
+
+```bash
+git init
+git fetch
+```
+
+4. Agregar nuevo repositorio de trabajo
+
+```bash
+git remote add origin <url>
 ```
 
 ## Variables de entorno
