@@ -39,6 +39,12 @@ echo "📦 Copiando archivos al directorio actual..."
 cp -r "$TMP_DIR"/* "$TMP_DIR"/.??* . 2>/dev/null || true
 rm -rf "$TMP_DIR"
 
+# Limpiar .git si existe
+if [ -d .git ]; then
+  echo "🧹 Eliminando repositorio Git existente..."
+  rm -rf .git
+fi
+
 echo "🔃 Re-inicializando git..."
 git init
 git remote remove origin

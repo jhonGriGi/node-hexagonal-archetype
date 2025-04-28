@@ -1,4 +1,4 @@
-import Product from "../model/product";
+import Product from '../model/product';
 
 interface ProductRepository {
   add: (product: Product) => Promise<void>;

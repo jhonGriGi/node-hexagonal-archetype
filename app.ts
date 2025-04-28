@@ -1,1 +1,1 @@
-export * from "./app/entrypoints/lambda/products-handler";
+export * from './app/entrypoints/lambda/products-handler';

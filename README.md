@@ -7,10 +7,10 @@ Aplicación serverless con SAM para la creación de distintas lambdas en las cue
 Antes de instalar el repositorio asegurate de tener las siguientes herramientas para el desarrollo
 de tu aplicación
 
-* [Instalar Docker](https://www.docker.com/get-started)
-* [SAM CLI](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-install.html)
-* [NodeJs y NPM](https://nodejs.org/en/)
-* [Git](https://git-scm.com/)
+- [Instalar Docker](https://www.docker.com/get-started)
+- [SAM CLI](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-install.html)
+- [NodeJs y NPM](https://nodejs.org/en/)
+- [Git](https://git-scm.com/)
 
 ## Instalación
 
@@ -18,10 +18,12 @@ Puedes usar un script de instalacion que clonara el repositorio, eliminara el re
 usando el gesto de paquetes de tu gusto
 
 Tenemos que pasar 2 argumentos:
+
 1. Carpeta destino.
 2. Gestor de paquetes: npm, yarn o pnpm (obligatorio).
 
 ### Uso:
+
 - Para usar el script usa el siguiente comando en bash:
 
 ```bash
@@ -164,22 +166,21 @@ en el siguiente link.
 
 El repositorio utiliza los siguientes patrones:
 
-* [Factory](https://refactoring.guru/es/design-patterns/factory-method): para la implementación de
+- [Factory](https://refactoring.guru/es/design-patterns/factory-method): para la implementación de
   conexiones a base de datos
-* [Proxy](https://refactoring.guru/es/design-patterns/proxy): para la implementación de librerias
+- [Proxy](https://refactoring.guru/es/design-patterns/proxy): para la implementación de librerias
   reduciendo asi la integración de librerias externas en el código fuente
-* [Builder](https://refactoring.guru/es/design-patterns/builder): se usa principalmente en la
+- [Builder](https://refactoring.guru/es/design-patterns/builder): se usa principalmente en la
   creación de las respuestas de la api
 
 ```typescript
-ApiResponseBuilder
-    .empty()
-    .withStatusCode(200)
-    .withHeaders({ 'Content-Type': 'application/json' })
-    .withBody({
-        Hello: 'World'
-    })
-    .build()
+ApiResponseBuilder.empty()
+  .withStatusCode(200)
+  .withHeaders({ 'Content-Type': 'application/json' })
+  .withBody({
+    Hello: 'World',
+  })
+  .build();
 ```
 
 ## Desplegar la aplicación de ejemplo
@@ -195,8 +196,7 @@ Para usar la SAM CLI, necesitas las siguientes herramientas:
   CLI - [Instalar SAM CLI](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-install.html)
 - Node.js - [Instalar Node.js 20](https://nodejs.org/en/), incluyendo la herramienta de gestión de
   paquetes NPM.
--
-Docker - [Instalar Docker edición comunitaria](https://hub.docker.com/search/?type=edition&offering=community)
+- Docker - [Instalar Docker edición comunitaria](https://hub.docker.com/search/?type=edition&offering=community)
 
 Para construir y desplegar tu aplicación por primera vez, ejecuta lo siguiente en tu terminal:
 

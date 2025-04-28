@@ -13,8 +13,7 @@ class LambdaResponseBuilder {
   private cookies?: string[];
   private isBase64Encoded?: boolean;
 
-  constructor() {
-  }
+  constructor() {}
 
   static empty() {
     return new LambdaResponseBuilder();
@@ -60,7 +59,7 @@ class LambdaResponseBuilder {
       headers: this.headers,
       body: this.body,
       cookies: this.cookies,
-      isBase64Encoded: this.isBase64Encoded
+      isBase64Encoded: this.isBase64Encoded,
     };
   }
 }

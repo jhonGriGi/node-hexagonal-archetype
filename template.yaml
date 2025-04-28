@@ -1,202 +1,202 @@
-AWSTemplateFormatVersion: "2010-09-09"
+AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: |
-    node-hexagonal-architecture-archetype
-    Sample SAM Template for node-hexagonal-architecture-archetype
+  node-hexagonal-architecture-archetype
+  Sample SAM Template for node-hexagonal-architecture-archetype
 
 Globals:
-    Function:
-        Timeout: 3
+  Function:
+    Timeout: 3
 
-    Api:
-        Auth:
-            DefaultAuthorizer: NONE
+  Api:
+    Auth:
+      DefaultAuthorizer: NONE
 
 Resources:
-    # Function for GET Products
-    GetProductsFunction:
-        Type: AWS::Serverless::Function
-        Properties:
-            CodeUri: .
-            Handler: app.getProductsHandler
-            Runtime: nodejs20.x
-            Tracing: Disabled
-            Environment:
-                Variables:
-                    POWERTOOLS_SERVICE_NAME: serverlessAirline
-                    POWERTOOLS_METRICS_NAMESPACE: serverlessAirline
-                    USER_DB: !Ref USER_DB
-                    PASSWORD_DB: !Ref PASSWORD_DB
-                    HOST_DB: !Ref HOST_DB
-                    PORT_DB: !Ref PORT_DB
-                    DATABASE_DB: !Ref DATABASE_DB
-            Architectures:
-                - x86_64
-            Events:
-                GetApi:
-                    Type: Api
-                    Properties:
-                        Path: /products/{id}
-                        Method: GET
-                GetAllApi:
-                    Type: Api
-                    Properties:
-                        Path: /products
-                        Method: GET
-        Metadata:
-            # Manage esbuild properties
-            BuildMethod: esbuild
-            BuildProperties:
-                Minify: true
-                Target: es2020
-                Sourcemap: true
-                EntryPoints:
-                    - app.ts
-    # Function for POST Products
-    PostProductsFunction:
-        Type: AWS::Serverless::Function
-        Properties:
-            CodeUri: .
-            Handler: app.postProductsHandler
-            Runtime: nodejs20.x
-            Tracing: Disabled
-            Environment:
-                Variables:
-                    POWERTOOLS_SERVICE_NAME: serverlessAirline
-                    POWERTOOLS_METRICS_NAMESPACE: serverlessAirline
-                    USER_DB: !Ref USER_DB
-                    PASSWORD_DB: !Ref PASSWORD_DB
-                    HOST_DB: !Ref HOST_DB
-                    PORT_DB: !Ref PORT_DB
-                    DATABASE_DB: !Ref DATABASE_DB
-            Architectures:
-                - x86_64
-            Events:
-                PostApi:
-                    Type: Api
-                    Properties:
-                        Path: /products
-                        Method: POST
-        Metadata:
-            # Manage esbuild properties
-            BuildMethod: esbuild
-            BuildProperties:
-                Minify: true
-                Target: es2020
-                Sourcemap: true
-                EntryPoints:
-                    - app.ts
+  # Function for GET Products
+  GetProductsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: .
+      Handler: app.getProductsHandler
+      Runtime: nodejs20.x
+      Tracing: Disabled
+      Environment:
+        Variables:
+          POWERTOOLS_SERVICE_NAME: serverlessAirline
+          POWERTOOLS_METRICS_NAMESPACE: serverlessAirline
+          USER_DB: !Ref USER_DB
+          PASSWORD_DB: !Ref PASSWORD_DB
+          HOST_DB: !Ref HOST_DB
+          PORT_DB: !Ref PORT_DB
+          DATABASE_DB: !Ref DATABASE_DB
+      Architectures:
+        - x86_64
+      Events:
+        GetApi:
+          Type: Api
+          Properties:
+            Path: /products/{id}
+            Method: GET
+        GetAllApi:
+          Type: Api
+          Properties:
+            Path: /products
+            Method: GET
+    Metadata:
+      # Manage esbuild properties
+      BuildMethod: esbuild
+      BuildProperties:
+        Minify: true
+        Target: es2020
+        Sourcemap: true
+        EntryPoints:
+          - app.ts
+  # Function for POST Products
+  PostProductsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: .
+      Handler: app.postProductsHandler
+      Runtime: nodejs20.x
+      Tracing: Disabled
+      Environment:
+        Variables:
+          POWERTOOLS_SERVICE_NAME: serverlessAirline
+          POWERTOOLS_METRICS_NAMESPACE: serverlessAirline
+          USER_DB: !Ref USER_DB
+          PASSWORD_DB: !Ref PASSWORD_DB
+          HOST_DB: !Ref HOST_DB
+          PORT_DB: !Ref PORT_DB
+          DATABASE_DB: !Ref DATABASE_DB
+      Architectures:
+        - x86_64
+      Events:
+        PostApi:
+          Type: Api
+          Properties:
+            Path: /products
+            Method: POST
+    Metadata:
+      # Manage esbuild properties
+      BuildMethod: esbuild
+      BuildProperties:
+        Minify: true
+        Target: es2020
+        Sourcemap: true
+        EntryPoints:
+          - app.ts
 
-    # Function for PUT Products
-    PutProductsFunction:
-        Type: AWS::Serverless::Function
-        Properties:
-            CodeUri: .
-            Handler: app.putProductsHandler
-            Runtime: nodejs20.x
-            Tracing: Disabled
-            Environment:
-                Variables:
-                    POWERTOOLS_SERVICE_NAME: serverlessAirline
-                    POWERTOOLS_METRICS_NAMESPACE: serverlessAirline
-                    USER_DB: !Ref USER_DB
-                    PASSWORD_DB: !Ref PASSWORD_DB
-                    HOST_DB: !Ref HOST_DB
-                    PORT_DB: !Ref PORT_DB
-                    DATABASE_DB: !Ref DATABASE_DB
-            Architectures:
-                - x86_64
-            Events:
-                PutApi:
-                    Type: Api
-                    Properties:
-                        Path: /products
-                        Method: PUT
-        Metadata:
-            # Manage esbuild properties
-            BuildMethod: esbuild
-            BuildProperties:
-                Minify: true
-                Target: es2020
-                Sourcemap: true
-                EntryPoints:
-                    - app.ts
+  # Function for PUT Products
+  PutProductsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: .
+      Handler: app.putProductsHandler
+      Runtime: nodejs20.x
+      Tracing: Disabled
+      Environment:
+        Variables:
+          POWERTOOLS_SERVICE_NAME: serverlessAirline
+          POWERTOOLS_METRICS_NAMESPACE: serverlessAirline
+          USER_DB: !Ref USER_DB
+          PASSWORD_DB: !Ref PASSWORD_DB
+          HOST_DB: !Ref HOST_DB
+          PORT_DB: !Ref PORT_DB
+          DATABASE_DB: !Ref DATABASE_DB
+      Architectures:
+        - x86_64
+      Events:
+        PutApi:
+          Type: Api
+          Properties:
+            Path: /products
+            Method: PUT
+    Metadata:
+      # Manage esbuild properties
+      BuildMethod: esbuild
+      BuildProperties:
+        Minify: true
+        Target: es2020
+        Sourcemap: true
+        EntryPoints:
+          - app.ts
 
-    # Function for DELETE Products
-    DeleteProductsFunction:
-        Type: AWS::Serverless::Function
-        Properties:
-            CodeUri: .
-            Handler: app.deleteProductsHandler
-            Runtime: nodejs20.x
-            Tracing: Disabled
-            Environment:
-                Variables:
-                    POWERTOOLS_SERVICE_NAME: serverlessAirline
-                    POWERTOOLS_METRICS_NAMESPACE: serverlessAirline
-                    USER_DB: !Ref USER_DB
-                    PASSWORD_DB: !Ref PASSWORD_DB
-                    HOST_DB: !Ref HOST_DB
-                    PORT_DB: !Ref PORT_DB
-                    DATABASE_DB: !Ref DATABASE_DB
-            Architectures:
-                - x86_64
-            Events:
-                DeleteApi:
-                    Type: Api
-                    Properties:
-                        Path: /products/{id}
-                        Method: DELETE
-        Metadata:
-            # Manage esbuild properties
-            BuildMethod: esbuild
-            BuildProperties:
-                Minify: true
-                Target: es2020
-                Sourcemap: true
-                EntryPoints:
-                    - app.ts
+  # Function for DELETE Products
+  DeleteProductsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: .
+      Handler: app.deleteProductsHandler
+      Runtime: nodejs20.x
+      Tracing: Disabled
+      Environment:
+        Variables:
+          POWERTOOLS_SERVICE_NAME: serverlessAirline
+          POWERTOOLS_METRICS_NAMESPACE: serverlessAirline
+          USER_DB: !Ref USER_DB
+          PASSWORD_DB: !Ref PASSWORD_DB
+          HOST_DB: !Ref HOST_DB
+          PORT_DB: !Ref PORT_DB
+          DATABASE_DB: !Ref DATABASE_DB
+      Architectures:
+        - x86_64
+      Events:
+        DeleteApi:
+          Type: Api
+          Properties:
+            Path: /products/{id}
+            Method: DELETE
+    Metadata:
+      # Manage esbuild properties
+      BuildMethod: esbuild
+      BuildProperties:
+        Minify: true
+        Target: es2020
+        Sourcemap: true
+        EntryPoints:
+          - app.ts
 
-    ApplicationResourceGroup:
-        Type: AWS::ResourceGroups::Group
-        Properties:
-            Name: !Sub ApplicationInsights-SAM-${AWS::StackName}
-            ResourceQuery:
-                Type: CLOUDFORMATION_STACK_1_0
+  ApplicationResourceGroup:
+    Type: AWS::ResourceGroups::Group
+    Properties:
+      Name: !Sub ApplicationInsights-SAM-${AWS::StackName}
+      ResourceQuery:
+        Type: CLOUDFORMATION_STACK_1_0
 
-    ApplicationInsightsMonitoring:
-        Type: AWS::ApplicationInsights::Application
-        Properties:
-            ResourceGroupName: !Ref ApplicationResourceGroup
-            AutoConfigurationEnabled: "true"
+  ApplicationInsightsMonitoring:
+    Type: AWS::ApplicationInsights::Application
+    Properties:
+      ResourceGroupName: !Ref ApplicationResourceGroup
+      AutoConfigurationEnabled: 'true'
 
 Outputs:
-    GetProductsApi:
-        Description: API Gateway endpoint URL for GET Products
-        Value: !Sub https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/products/
-    PostProductsApi:
-        Description: API Gateway endpoint URL for POST Products
-        Value: !Sub https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/products/
-    PutProductsApi:
-        Description: API Gateway endpoint URL for PUT Products
-        Value: !Sub https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/products/{id}
-    DeleteProductsApi:
-        Description: API Gateway endpoint URL for DELETE Products
-        Value: !Sub https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/products/{id}
+  GetProductsApi:
+    Description: API Gateway endpoint URL for GET Products
+    Value: !Sub https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/products/
+  PostProductsApi:
+    Description: API Gateway endpoint URL for POST Products
+    Value: !Sub https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/products/
+  PutProductsApi:
+    Description: API Gateway endpoint URL for PUT Products
+    Value: !Sub https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/products/{id}
+  DeleteProductsApi:
+    Description: API Gateway endpoint URL for DELETE Products
+    Value: !Sub https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/products/{id}
 
 Parameters:
-    USER_DB:
-        Type: String
-        Description: User database
-    PASSWORD_DB:
-        Type: String
-        Description: Password database
-    HOST_DB:
-        Type: String
-        Description: Host database
-    PORT_DB:
-        Type: String
-        Description: Port database
-    DATABASE_DB:
-        Type: String
-        Description: Database database
+  USER_DB:
+    Type: String
+    Description: User database
+  PASSWORD_DB:
+    Type: String
+    Description: Password database
+  HOST_DB:
+    Type: String
+    Description: Host database
+  PORT_DB:
+    Type: String
+    Description: Port database
+  DATABASE_DB:
+    Type: String
+    Description: Database database

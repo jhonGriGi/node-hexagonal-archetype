@@ -1,5 +1,5 @@
-import { Logger } from "@aws-lambda-powertools/logger";
-import { LogItemExtraInput } from "@aws-lambda-powertools/logger/lib/cjs/types/Logger";
+import { Logger } from '@aws-lambda-powertools/logger';
+import { LogItemExtraInput } from '@aws-lambda-powertools/logger/lib/cjs/types/Logger';
 
 export const logger = new Logger();
 
