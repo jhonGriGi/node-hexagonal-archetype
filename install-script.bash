@@ -47,7 +47,9 @@ fi
 
 echo "🔃 Re-inicializando git..."
 git init
-git remote remove origin
+if git remote get-url origin >/dev/null 2>&1; then
+  git remote remove origin
+fi
 git fetch
 
 if [ -n "$REMOTE_ORIGIN" ]; then
