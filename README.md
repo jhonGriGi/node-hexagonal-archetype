@@ -31,13 +31,6 @@ Tenemos que pasar 2 argumentos:
 bash <(curl -s https://raw.githubusercontent.com/jhonGriGi/node-hexagonal-archetype/refs/heads/main/install-script.bash)
 ```
 
-- Si olvidas el gestor, te muestra el error:
-
-```bash
-bash <(curl -s https://raw.githubusercontent.com/jhonGriGi/node-hexagonal-archetype/refs/heads/main/install-script.bash)
-# Error: Debes especificar el gestor de paquetes (npm, yarn o pnpm)
-```
-
 ## Instalacion manual y configuracion de arquetipo
 
 1. Clonar el repositorio e ingresar a la carpeta
@@ -193,9 +186,9 @@ El repositorio utiliza los siguientes patrones:
 ```typescript
 ApiResponseBuilder.empty()
   .withStatusCode(200)
-  .withHeaders({ 'Content-Type': 'application/json' })
+  .withHeaders({ "Content-Type": "application/json" })
   .withBody({
-    Hello: 'World',
+    Hello: "World",
   })
   .build();
 ```
