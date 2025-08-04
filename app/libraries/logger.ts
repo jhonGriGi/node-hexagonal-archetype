@@ -1,38 +1,45 @@
-import { Logger } from '@aws-lambda-powertools/logger';
-import { LogItemExtraInput } from '@aws-lambda-powertools/logger/lib/cjs/types/Logger';
+import { Loggerfy } from 'loggerfy';
 
-export const logger = new Logger();
+const logger = new Loggerfy();
+
+export interface LOGGER_PARAMS {
+  code: string;
+  message: string;
+  detail?: string;
+  metadata?: Record<string, string>;
+}
 
 class LambdaLogger {
-  /**
-   *
-   *you can use multiple objects for logs like the example below
-   * logger.info(
-   *   'This is a log with 3 extra objects',
-   *    { data: myImportantVariable },
-   *    { correlationIds: { myCustomCorrelationId: 'foo-bar-baz' } },
-   *    { lambdaEvent: event }
-   * );
-   *
-   */
-  static info(title: string, ...extraInput: LogItemExtraInput) {
-    logger.info(title, ...extraInput);
+  static info({ code, message, metadata, detail }: LOGGER_PARAMS): void {
+    logger
+      .info()
+      .setCode(code)
+      .setDetail(detail ?? 'lambda_logger')
+      .setMessage(message)
+      .setMetadata(metadata ?? {})
+      .write();
   }
 
-  /**
-   *
-   * you can use multiple objects for logs like the example below
-   *           logger.info(
-   *             'This is a log with 3 extra objects',
-   *             { data: myImportantVariable },
-   *             { correlationIds: { myCustomCorrelationId: 'foo-bar-baz' } },
-   *             { lambdaEvent: event }
-   *         );
-   *
-   */
-  static error(title: string, ...extraInput: LogItemExtraInput) {
-    logger.error(title, ...extraInput);
+  static warn({ code, message, metadata, detail }: LOGGER_PARAMS): void {
+    logger
+      .warn()
+      .setCode(code)
+      .setDetail(detail ?? 'lambda_logger')
+      .setMessage(message)
+      .setMetadata(metadata ?? {})
+      .write();
+  }
+
+  static error({ code, message, metadata, detail }: LOGGER_PARAMS): void {
+    logger
+      .error()
+      .setCode(code)
+      .setDetail(detail ?? 'lambda_logger')
+      .setMessage(message)
+      .setMetadata(metadata ?? {})
+      .write();
   }
 }
 
-export default LambdaLogger;
+export default LambdaLogger
+

@@ -185,12 +185,12 @@ El repositorio utiliza los siguientes patrones:
 
 ```typescript
 ApiResponseBuilder.empty()
-  .withStatusCode(200)
-  .withHeaders({ "Content-Type": "application/json" })
-  .withBody({
-    Hello: "World",
-  })
-  .build();
+    .withStatusCode(200)
+    .withHeaders({ 'Content-Type': 'application/json' })
+    .withBody({
+        Hello: 'World',
+    })
+    .build();
 ```
 
 ## Desplegar la aplicación de ejemplo

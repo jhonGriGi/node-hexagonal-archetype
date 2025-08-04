@@ -1,33 +1,33 @@
 {
-  "compilerOptions": {
-    "target": "es2020",
-    "strict": true,
-    "preserveConstEnums": true,
-    "noEmit": true,
-    "sourceMap": false,
-    "module": "es2015",
-    "moduleResolution": "node",
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
-    "experimentalDecorators": true,
-    "baseUrl": "./",
-    "paths": {
-      "@domain/*": ["app/domain/*"],
-      "@adapters/*": ["app/adapters/*"],
-      "@lambda/*": ["app/entrypoints/lambda/*"],
-      "@schemas/*": ["app/entrypoints/schemas/*"],
-      "@libraries/*": ["app/libraries/*"],
-      "@ports/*": ["app/domain/ports/*"],
-      "@model/*": ["app/domain/model/*"]
-    }
-  },
-  "exclude": ["node_modules"],
-  "include": [
-    "app.ts",
-    "app/**/*.ts",
-    "**/*.test.ts",
-    "jest.config.ts",
-    "eslint.config.mjs"
-  ]
+    "compilerOptions": {
+        "target": "es2020",
+        "experimentalDecorators": true,
+        "baseUrl": "./",
+        "module": "es2015",
+        "moduleResolution": "node",
+        "paths": {
+            "@domain/*": ["app/domain/*"],
+            "@adapters/*": ["app/adapters/*"],
+            "@lambda/*": ["app/entrypoints/lambda/*"],
+            "@schemas/*": ["app/entrypoints/schemas/*"],
+            "@libraries/*": ["app/libraries/*"],
+            "@ports/*": ["app/domain/ports/*"],
+            "@model/*": ["app/domain/model/*"]
+        },
+        "strict": true,
+        "noEmit": true,
+        "preserveConstEnums": true,
+        "sourceMap": false,
+        "esModuleInterop": true,
+        "forceConsistentCasingInFileNames": true,
+        "skipLibCheck": true
+    },
+    "include": [
+        "app.ts",
+        "app/**/*.ts",
+        "**/*.test.ts",
+        "jest.config.ts",
+        "eslint.config.mjs"
+    ],
+    "exclude": ["node_modules"]
 }

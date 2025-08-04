@@ -56,14 +56,18 @@ do
 done
 
 echo "📥 Installing development dependencies..."
-INSTALL_PACKAGES="ts-node typescript jest ts-jest @jest/globals @types/jest @types/node eslint @types/aws-lambda @antfu/eslint-config"
+INSTALL_DEPENDENCIES="esbuild loggerfy safe-json-stringify uuid zod"
+INSTALL_DEV_DEPENDENCIES="ts-node typescript jest ts-jest @jest/globals @types/jest @types/node eslint @types/aws-lambda @antfu/eslint-config"
 
 if [ "$PACKAGE_MANAGER" = "npm" ]; then
-  npm install -D $INSTALL_PACKAGES
+  npm install --save --save-exact $INSTALL_DEPENDENCIES
+  npm install --save-dev --save-exact $INSTALL_DEV_DEPENDENCIES
 elif [ "$PACKAGE_MANAGER" = "pnpm" ]; then
-  pnpm add -D $INSTALL_PACKAGES
+  pnpm add $INSTALL_DEPENDENCIES
+  pnpm add -D $INSTALL_DEV_DEPENDENCIES
 elif [ "$PACKAGE_MANAGER" = "yarn" ]; then
-  yarn add -D $INSTALL_PACKAGES
+  yarn add $INSTALL_DEPENDENCIES
+  yarn add -D $INSTALL_DEV_DEPENDENCIES
 fi
 
 echo "🛠️ Generating configuration files..."
@@ -96,7 +100,6 @@ cat > tsconfig.json << 'EOF'
   },
   "exclude": ["node_modules"],
   "include": [
-    "app.ts",
     "app/**/*.ts",
     "**/*.test.ts",
     "jest.config.ts",
@@ -192,6 +195,63 @@ EOF
 
 echo "📂 Creating folder structure for Clean Architecture..."
 mkdir -p app app/adapters app/domain app/entrypoints app/libraries events
+
+cat > ./app/libraries/logger.ts << 'EOF'
+import { Loggerfy } from 'loggerfy';
+
+const logger = new Loggerfy();
+
+export interface LOGGER_PARAMS {
+  code: string;
+  message: string;
+  detail?: string;
+  metadata?: Record<string, string>;
+}
+
+class LambdaLogger {
+  static info({ code, message, metadata, detail }: LOGGER_PARAMS): void {
+    logger
+      .info()
+      .setCode(code)
+      .setDetail(detail ?? 'lambda_logger')
+      .setMessage(message)
+      .setMetadata(metadata ?? {})
+      .write();
+  }
+
+  static warn({ code, message, metadata, detail }: LOGGER_PARAMS): void {
+    logger
+      .warn()
+      .setCode(code)
+      .setDetail(detail ?? 'lambda_logger')
+      .setMessage(message)
+      .setMetadata(metadata ?? {})
+      .write();
+  }
+
+  static error({ code, message, metadata, detail }: LOGGER_PARAMS): void {
+    logger
+      .error()
+      .setCode(code)
+      .setDetail(detail ?? 'lambda_logger')
+      .setMessage(message)
+      .setMetadata(metadata ?? {})
+      .write();
+  }
+}
+
+export default LambdaLogger
+
+EOF
+
+cat > ./app/libraries/safe-object-stringify.ts << 'EOF'
+import safeJsonStringify from 'safe-json-stringify'
+
+export const safeStringify = (data: object) => {
+  return safeJsonStringify(data, null, 2)
+}
+
+EOF
 
 cat > eslint.config.mjs << 'EOF'
 // eslint.config.mjs

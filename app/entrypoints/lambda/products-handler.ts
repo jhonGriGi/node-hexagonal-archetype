@@ -15,25 +15,25 @@ const repository = new DatabaseDriverRepository(databaseConfig);
 
 // Export Lambda handlers
 export const postProductsHandler = createHandler(
-  CreateProductCommandHandler,
-  CreateProductHandler,
-  repository
+    CreateProductCommandHandler,
+    CreateProductHandler,
+    repository,
 );
 
 export const deleteProductsHandler = createHandler(
-  DeleteProductCommandHandler,
-  DeleteProductHandler,
-  repository
+    DeleteProductCommandHandler,
+    DeleteProductHandler,
+    repository,
 );
 
 export const putProductsHandler = createHandler(
-  UpdateProductCommandHandler,
-  UpdateProductHandler,
-  repository
+    UpdateProductCommandHandler,
+    UpdateProductHandler,
+    repository,
 );
 
 export const getProductsHandler = createHandler(
-  SearchProductQueryHandler,
-  SearchProductHandler,
-  repository
+    SearchProductQueryHandler,
+    SearchProductHandler,
+    repository,
 );
