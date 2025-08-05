@@ -57,7 +57,7 @@ done
 
 echo "📥 Installing development dependencies..."
 INSTALL_DEPENDENCIES="esbuild loggerfy safe-json-stringify uuid zod"
-INSTALL_DEV_DEPENDENCIES="ts-node typescript jest ts-jest @jest/globals @types/jest @types/node eslint @types/aws-lambda @antfu/eslint-config"
+INSTALL_DEV_DEPENDENCIES="ts-node typescript jest ts-jest @jest/globals @types/jest @types/node eslint eslint-plugin-format @antfu/eslint-config"
 
 if [ "$PACKAGE_MANAGER" = "npm" ]; then
   npm install --save --save-exact $INSTALL_DEPENDENCIES
@@ -126,6 +126,19 @@ cat > template.yaml << 'EOF'
 Transform: AWS:Serverless-2016-10-31
 Description: |
   Initial structure
+
+Globals:
+  Function:
+    Timeout: 10
+    Runtime: nodejs18.x
+    Architectures:
+      - x86_64
+    Metadata:
+      BuildMethod: esbuild
+      BuildProperties:
+        Minify: true
+        Target: es2020
+        Sourcemap: false
 
 Resources:
 

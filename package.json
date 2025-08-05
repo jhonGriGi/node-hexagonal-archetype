@@ -23,12 +23,11 @@
   "devDependencies": {
     "@antfu/eslint-config": "5.1.0",
     "@jest/globals": "29.2.0",
-    "@types/aws-lambda": "8.10.147",
     "@types/jest": "29.2.0",
     "@types/node": "20.5.7",
     "@types/safe-json-stringify": "1.1.5",
     "eslint": "9.32.0",
-    "eslint-plugin-format": "^1.0.1",
+    "eslint-plugin-format": "1.0.1",
     "jest": "29.2.1",
     "ts-jest": "29.0.5",
     "ts-node": "10.9.1",
