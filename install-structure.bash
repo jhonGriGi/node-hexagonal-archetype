@@ -209,6 +209,33 @@ EOF
 echo "📂 Creating folder structure for Clean Architecture..."
 mkdir -p app app/adapters app/domain app/domain/builders app/entrypoints app/libraries events
 
+cat > ./app/libraries/lambda-instance-builder.ts << 'EOF'
+import { LambdaResponseBuilder } from '@domain/builders/api-response-builders.ts';
+
+interface LambdaHandlerInterface {
+  handler(
+    _event: unknown,
+    _context: unknown
+  ): Promise<LambdaResponseBuilder>;
+}
+
+type Constructor<T> = new (...args: any[]) => T;
+
+const createHandler = <C, R>(
+  CommandHandlerClass: Constructor<C>,
+  HandlerClass: Constructor<LambdaHandlerInterface>,
+  repository: R
+  ) => {
+  const commandHandler = new CommandHandlerClass(repository);
+  const handlerInstance = new HandlerClass(commandHandler);
+
+  return handlerInstance.handler.bind(handlerInstance);
+};
+
+export default createHandler;
+
+EOF
+
 cat > ./app/libraries/logger.ts << 'EOF'
 import { Loggerfy } from 'loggerfy';
 
