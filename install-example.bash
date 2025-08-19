@@ -78,4 +78,5 @@ do
   esac
 done
 
+rm *.bash
 echo "✅ Proyecto listo en $(pwd)."
