@@ -10,8 +10,45 @@ PROJECT_FOLDER=${PROJECT_FOLDER:-.}
 
 if [ "$PROJECT_FOLDER" != "." ]; then
   echo "📁 Creando directorio $PROJECT_FOLDER..."
-  mkdir -p "$PROJECT_FOLDER"
+  echo "📥 Clonando repositorio en carpeta de proyecto"
+  git clone "$REPO_URL" "$PROJECT_FOLDER"
+
   cd "$PROJECT_FOLDER" || exit 1
+
+else
+  # Limpiar .git si existe
+  if [ -d .git ]; then
+    echo "🧹 Eliminando repositorio Git existente..."
+    rm -rf .git
+  fi
+  echo "📥 Clonando repositorio en carpeta de proyecto"
+  git clone "$REPO_URL" "."
+fi
+
+# Limpiar .git si existe
+if [ -d .git ]; then
+  echo "🧹 Eliminando repositorio Git existente..."
+  rm -rf .git
+fi
+
+echo "🔧 Nuevo remote origin de git (opcional, deja vacío si no quieres configurarlo)"
+read -r REMOTE_ORIGIN
+
+echo "🔃 Re-inicializando git..."
+git init
+if git remote get-url origin >/dev/null 2>&1; then
+  git remote remove origin
+fi
+git fetch
+
+if [ -n "$REMOTE_ORIGIN" ]; then
+  echo "🔗 Agregando remote origin: $REMOTE_ORIGIN"
+
+  git remote add origin "$REMOTE_ORIGIN"
+
+  echo "El remote origin actual es: $(git remote get-url origin)"
+else
+  echo "ℹ️ No se configuró remote origin."
 fi
 
 echo "🔧 Package Manager para el proyecto [npm, pnpm, yarn]"
@@ -40,46 +77,5 @@ do
       ;;
   esac
 done
-
-echo "🔧 Nuevo remote origin de git (opcional, deja vacío si no quieres configurarlo)"
-read -r REMOTE_ORIGIN
-
-# Limpiar .git si existe
-if [ -d .git ]; then
-  echo "🧹 Eliminando repositorio Git existente..."
-  rm -rf .git
-fi
-
-echo "📥 Clonando repositorio en carpeta temporal..."
-TMP_DIR=$(mktemp -d)
-git clone "$REPO_URL" "$TMP_DIR"
-
-echo "📦 Copiando archivos al directorio actual..."
-cp -r "$TMP_DIR"/* "$TMP_DIR"/.??* . 2>/dev/null || true
-rm -rf "$TMP_DIR"
-
-# Limpiar .git si existe
-if [ -d .git ]; then
-  echo "🧹 Eliminando repositorio Git existente..."
-  rm -rf .git
-fi
-
-echo "🔃 Re-inicializando git..."
-git init
-if git remote get-url origin >/dev/null 2>&1; then
-  git remote remove origin
-fi
-git fetch
-
-if [ -n "$REMOTE_ORIGIN" ]; then
-  echo "🔗 Agregando remote origin: $REMOTE_ORIGIN"
-
-  git remote add origin "$REMOTE_ORIGIN"
-
-  echo "El remote origin actual es: $(git remote get-url origin)"
-else
-  echo "ℹ️ No se configuró remote origin."
-fi
-
 
 echo "✅ Proyecto listo en $(pwd)."
