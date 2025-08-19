@@ -77,7 +77,5 @@ do
       ;;
   esac
 done
-shopt -s nullglob
-rm -- *.bash
-shopt -u nullglob
+rm install-structure.bash install-example.bash install-script.bash
 echo "✅ Proyecto listo en $(pwd)."
