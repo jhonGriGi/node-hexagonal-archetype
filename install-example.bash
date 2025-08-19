@@ -77,6 +77,7 @@ do
       ;;
   esac
 done
-
-rm *.bash
+shopt -s nullglob
+rm -- *.bash
+shopt -u nullglob
 echo "✅ Proyecto listo en $(pwd)."
