@@ -13,7 +13,7 @@ export default {
     coverageDirectory: 'coverage',
     coverageProvider: 'v8',
     collectCoverageFrom: ['app/**/*.{js,jsx,ts,tsx}', '!<rootDir>/node_modules/'],
-    testMatch: ['**/tests/unit/**/*.test.ts'],
+    testMatch: ['**/tests/**/*.test.ts'],
     modulePathIgnorePatterns: [
         'app/domain/Builders/',
         'app/domain/exceptions/',

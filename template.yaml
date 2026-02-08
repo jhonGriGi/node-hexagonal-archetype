@@ -7,7 +7,7 @@ Description: |
 Globals:
   Function:
     Timeout: 10
-    Runtime: nodejs18.x
+    Runtime: nodejs20.x
     Architectures:
       - x86_64
     Metadata:
@@ -29,16 +29,6 @@ Resources:
       CodeUri: .
       Handler: app.getProductsHandler
       Runtime: nodejs20.x
-      Tracing: Disabled
-      Environment:
-        Variables:
-          POWERTOOLS_SERVICE_NAME: serverlessAirline
-          POWERTOOLS_METRICS_NAMESPACE: serverlessAirline
-          USER_DB: !Ref USER_DB
-          PASSWORD_DB: !Ref PASSWORD_DB
-          HOST_DB: !Ref HOST_DB
-          PORT_DB: !Ref PORT_DB
-          DATABASE_DB: !Ref DATABASE_DB
       Architectures:
         - x86_64
       Events:
@@ -53,7 +43,6 @@ Resources:
             Path: /products
             Method: GET
     Metadata:
-      # Manage esbuild properties
       BuildMethod: esbuild
       BuildProperties:
         Minify: true
@@ -68,16 +57,6 @@ Resources:
       CodeUri: .
       Handler: app.postProductsHandler
       Runtime: nodejs20.x
-      Tracing: Disabled
-      Environment:
-        Variables:
-          POWERTOOLS_SERVICE_NAME: serverlessAirline
-          POWERTOOLS_METRICS_NAMESPACE: serverlessAirline
-          USER_DB: !Ref USER_DB
-          PASSWORD_DB: !Ref PASSWORD_DB
-          HOST_DB: !Ref HOST_DB
-          PORT_DB: !Ref PORT_DB
-          DATABASE_DB: !Ref DATABASE_DB
       Architectures:
         - x86_64
       Events:
@@ -87,7 +66,6 @@ Resources:
             Path: /products
             Method: POST
     Metadata:
-      # Manage esbuild properties
       BuildMethod: esbuild
       BuildProperties:
         Minify: true
@@ -103,16 +81,6 @@ Resources:
       CodeUri: .
       Handler: app.putProductsHandler
       Runtime: nodejs20.x
-      Tracing: Disabled
-      Environment:
-        Variables:
-          POWERTOOLS_SERVICE_NAME: serverlessAirline
-          POWERTOOLS_METRICS_NAMESPACE: serverlessAirline
-          USER_DB: !Ref USER_DB
-          PASSWORD_DB: !Ref PASSWORD_DB
-          HOST_DB: !Ref HOST_DB
-          PORT_DB: !Ref PORT_DB
-          DATABASE_DB: !Ref DATABASE_DB
       Architectures:
         - x86_64
       Events:
@@ -122,7 +90,6 @@ Resources:
             Path: /products
             Method: PUT
     Metadata:
-      # Manage esbuild properties
       BuildMethod: esbuild
       BuildProperties:
         Minify: true
@@ -138,16 +105,6 @@ Resources:
       CodeUri: .
       Handler: app.deleteProductsHandler
       Runtime: nodejs20.x
-      Tracing: Disabled
-      Environment:
-        Variables:
-          POWERTOOLS_SERVICE_NAME: serverlessAirline
-          POWERTOOLS_METRICS_NAMESPACE: serverlessAirline
-          USER_DB: !Ref USER_DB
-          PASSWORD_DB: !Ref PASSWORD_DB
-          HOST_DB: !Ref HOST_DB
-          PORT_DB: !Ref PORT_DB
-          DATABASE_DB: !Ref DATABASE_DB
       Architectures:
         - x86_64
       Events:
@@ -157,7 +114,6 @@ Resources:
             Path: /products/{id}
             Method: DELETE
     Metadata:
-      # Manage esbuild properties
       BuildMethod: esbuild
       BuildProperties:
         Minify: true
@@ -177,7 +133,7 @@ Resources:
     Type: AWS::ApplicationInsights::Application
     Properties:
       ResourceGroupName: !Ref ApplicationResourceGroup
-      AutoConfigurationEnabled: "true"
+      AutoConfigurationEnabled: 'true'
 
 Outputs:
   GetProductsApi:
@@ -192,20 +148,3 @@ Outputs:
   DeleteProductsApi:
     Description: API Gateway endpoint URL for DELETE Products
     Value: !Sub https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/products/{id}
-
-Parameters:
-  USER_DB:
-    Type: String
-    Description: User database
-  PASSWORD_DB:
-    Type: String
-    Description: Password database
-  HOST_DB:
-    Type: String
-    Description: Host database
-  PORT_DB:
-    Type: String
-    Description: Port database
-  DATABASE_DB:
-    Type: String
-    Description: Database database

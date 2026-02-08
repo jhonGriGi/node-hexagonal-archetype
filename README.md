@@ -118,60 +118,35 @@ en el siguiente link.
 
 ```bash
 ├── app
-│   ├── adapters
-│   │   └── sql-driver-repository.ts # los adapters tendran las implementaciones externas como bases de datos u otras apis
-│   ├── domain
-│   │   ├── Builders
-│   │   │   └── ApiResponseBuilder.ts # builder para crear la respuesta de la lambda
-│   │   ├── command      # dentro de los command estara la logica de negocio de la aplicacion
-│   │   │   ├── create_product
-│   │   │   │   ├── query_handler.ts
-│   │   │   │   └── query.ts
-│   │   │   ├── delete_product
-│   │   │   │   ├── query_handler.ts
-│   │   │   │   └── query.ts
-│   │   │   └── update_product
-│   │   │       ├── query_handler.ts
-│   │   │       └── query.ts
-│   │   ├── constants
-│   │   │   └── constants.ts
-│   │   ├── exceptions
-│   │   │   ├── domain-exception.ts
-│   │   │   └── repository-exception.ts
-│   │   ├── model
-│   │   │   ├── product.ts
-│   │   │   └── product-version.ts
-│   │   └── ports     # los ports seran las interfaces que seran implementadas en los adaptadores
-│   │       └── product-repository.ts
-│   ├── entrypoints
-│   │   ├── lambda    # los entrypoints de la lambda en este lugar estaran los handlers
-│   │   │   └── products-handler.ts
-│   │   ├── schemas   # los tipos de request y response de los handlers
-│   │   │   └── products.ts
-│   │   └── tests
-│   │       └── unit
-│   │           └── products-handler.test.ts
-│   └── libraries     # en libraries estaran las implementaciones de las librerias externas
-│       ├── lambda-handler-interface.ts
-│       ├── logger.ts
-│       ├── metrics.ts
-│       ├── orm
-│       │   └── internals
-│       │       ├── database-config.ts
-│       │       ├── prisma.ts
-│       │       ├── sequelize.ts
-│       │       └── sql-driver.ts
-│       └── tracer.ts
-├── app.ts
-├── events     # Los eventos estaran alojados en events para la ejecucion local con sam
-│   └── event.json
-├── jest.config.ts
-├── package.json
-├── package-lock.json
-├── README.md
-├── samconfig.toml
-├── template.yaml
-└── tsconfig.json
+│   ├── adapters
+│   │   └── sql-driver-repository.ts # los adapters tendran las implementaciones externas como bases de datos u otras apis
+│   ├── domain
+│   │   ├── Builders
+│   │   │   └── ApiResponseBuilder.ts # builder para crear la respuesta de la lambda
+│   │   ├── command # dentro de los command estara la logica de negocio de la aplicacion
+│   │   │   ├── create_product
+│   │   │   │   ├── query_handler.ts
+│   │   │   │   └── query.ts
+│   │   │   ├── delete_product
+│   │   │   │   ├── query_handler.ts
+│   │   │   │   └── query.ts
+│   │   │   └── update_product
+│   │   │       ├── query_handler.ts
+│   │   │       └── query.ts
+│   │   ├── constants
+│   │   │   └── constants.ts
+│   │   ├── exceptions
+│   │   │   ├── domain-exception.ts
+│   │   │   └── repository-exception.ts
+│   │   ├── model
+│   │   │   ├── product.ts
+│   │   │   └── product-version.ts
+│   │   └── ports # los ports seran las interfaces que seran implementadas en los adaptadores
+│   │       └── product-repository.ts
+│   ├── entrypoints
+│   │   ├── lambda # los entrypoints de la lambda en este lugar estaran los handlers
+│   │   │   └── products-handler.ts
+│   │   ├── schemas
 ```
 
 El repositorio utiliza los siguientes patrones:

@@ -1,7 +1,6 @@
-import { APIGatewayProxyEventSchema } from '@aws-lambda-powertools/parser/schemas';
 import { z } from 'zod';
 
-export const GetProductsResponse = z.object({
+export const getProductsResponse = z.object({
     id: z.string().min(1),
     name: z.string().min(1),
     description: z.string().optional(),
@@ -9,9 +8,9 @@ export const GetProductsResponse = z.object({
     last_update_date: z.string().min(1),
 });
 
-export type GetProductsResponse = z.infer<typeof GetProductsResponse>;
+export type GetProductsResponse = z.infer<typeof getProductsResponse>;
 
-export const GetAllProductsResponse = z.array(
+export const getAllProductsResponse = z.array(
     z.object({
         id: z.string().min(1),
         name: z.string().min(1),
@@ -21,9 +20,9 @@ export const GetAllProductsResponse = z.array(
     }),
 );
 
-export type GetAllProductsResponse = z.infer<typeof GetAllProductsResponse>;
+export type GetAllProductsResponse = z.infer<typeof getAllProductsResponse>;
 
-export const GetProductSchema = APIGatewayProxyEventSchema.extend({
+export const getProductSchema = z.object({
     pathParameters: z
         .object({
             id: z.string().optional(),
@@ -32,13 +31,13 @@ export const GetProductSchema = APIGatewayProxyEventSchema.extend({
         .nullable(),
 });
 
-export type GetProductDTO = z.infer<typeof GetProductSchema>;
+export type GetProductDTO = z.infer<typeof getProductSchema>;
 
-export const CreateProductResponse = z.object({
+export const createProductResponse = z.object({
     id: z.string().min(1).uuid(),
 });
 
-export type CreateProductResponse = z.infer<typeof CreateProductResponse>;
+export type CreateProductResponse = z.infer<typeof createProductResponse>;
 
 export const CreateProductSchema = z.object({
     name: z.string().min(1),
@@ -48,25 +47,23 @@ export const CreateProductSchema = z.object({
 export type CreateProductDTO = z.infer<typeof CreateProductSchema>;
 
 export const UpdateProductSchema = z.object({
-    id: z.string().min(1),
-    name: z.string().min(1),
-    description: z.string().min(1),
+    body: z.object({
+        id: z.string().min(1),
+        name: z.string().min(1),
+        description: z.string().min(1),
+    }),
 });
 export type UpdateProductDTO = z.infer<typeof UpdateProductSchema>;
 
-export const UpdateProductResponse = z.object({
-    id: z.string().min(1),
-});
+export type UpdateProductResponse = {
+    id: string;
+};
 
-export type UpdateProductResponse = z.infer<typeof UpdateProductResponse>;
+export type DeleteProductResponse = {
+    id: string;
+};
 
-export const DeleteProductResponse = z.object({
-    id: z.string().min(1),
-});
-
-export type DeleteProductResponse = z.infer<typeof DeleteProductResponse>;
-
-export const DeleteProductSchema = APIGatewayProxyEventSchema.extend({
+export const DeleteProductSchema = z.object({
     pathParameters: z.object({
         id: z.string().min(1),
     }),

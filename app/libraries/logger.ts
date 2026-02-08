@@ -1,44 +1,64 @@
-import { Loggerfy } from 'loggerfy';
+import pino from 'pino';
 
-const logger = new Loggerfy();
-
-export interface LOGGER_PARAMS {
-    code: string;
-    message: string;
-    detail?: string;
-    metadata?: Record<string, string>;
+export interface ILogger {
+    info: (message: string, metadata?: Record<string, unknown>) => void;
+    warn: (message: string, metadata?: Record<string, unknown>) => void;
+    error: (message: string, metadata?: Record<string, unknown>) => void;
+    debug: (message: string, metadata?: Record<string, unknown>) => void;
 }
 
-class LambdaLogger {
-    static info({ code, message, metadata, detail }: LOGGER_PARAMS): void {
-        logger
-            .info()
-            .setCode(code)
-            .setDetail(detail ?? 'lambda_logger')
-            .setMessage(message)
-            .setMetadata(metadata ?? {})
-            .write();
+export class PinoLogger implements ILogger {
+    private logger: pino.Logger;
+
+    constructor() {
+        this.logger = pino({
+            level: process.env.LOG_LEVEL || 'info',
+        });
     }
 
-    static warn({ code, message, metadata, detail }: LOGGER_PARAMS): void {
-        logger
-            .warn()
-            .setCode(code)
-            .setDetail(detail ?? 'lambda_logger')
-            .setMessage(message)
-            .setMetadata(metadata ?? {})
-            .write();
+    info(message: string, metadata?: Record<string, unknown>): void {
+        this.logger.info(metadata || {}, message);
     }
 
-    static error({ code, message, metadata, detail }: LOGGER_PARAMS): void {
-        logger
-            .error()
-            .setCode(code)
-            .setDetail(detail ?? 'lambda_logger')
-            .setMessage(message)
-            .setMetadata(metadata ?? {})
-            .write();
+    warn(message: string, metadata?: Record<string, unknown>): void {
+        this.logger.warn(metadata || {}, message);
+    }
+
+    error(message: string, metadata?: Record<string, unknown>): void {
+        this.logger.error(metadata || {}, message);
+    }
+
+    debug(message: string, metadata?: Record<string, unknown>): void {
+        this.logger.debug(metadata || {}, message);
     }
 }
 
-export default LambdaLogger;
+export class LoggerProxy implements ILogger {
+    private context: Record<string, any> = {};
+
+    constructor(private target: ILogger) {}
+
+    setContext(key: string, value: any): void {
+        this.context[key] = value;
+    }
+
+    clearContext(): void {
+        this.context = {};
+    }
+
+    info(message: string, metadata?: Record<string, unknown>): void {
+        this.target.info(message, { ...this.context, ...metadata });
+    }
+
+    warn(message: string, metadata?: Record<string, unknown>): void {
+        this.target.warn(message, { ...this.context, ...metadata });
+    }
+
+    error(message: string, metadata?: Record<string, unknown>): void {
+        this.target.error(message, { ...this.context, ...metadata });
+    }
+
+    debug(message: string, metadata?: Record<string, unknown>): void {
+        this.target.debug(message, { ...this.context, ...metadata });
+    }
+}
