@@ -1,3 +1,4 @@
+import { LOG_LEVEL } from '@domain/constants/constants';
 import pino from 'pino';
 
 export interface ILogger {
@@ -12,7 +13,7 @@ export class PinoLogger implements ILogger {
 
     constructor() {
         this.logger = pino({
-            level: process.env.LOG_LEVEL || 'info',
+            level: LOG_LEVEL || 'info',
         });
     }
 

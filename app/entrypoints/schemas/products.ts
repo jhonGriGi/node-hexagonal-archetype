@@ -55,13 +55,13 @@ export const UpdateProductSchema = z.object({
 });
 export type UpdateProductDTO = z.infer<typeof UpdateProductSchema>;
 
-export type UpdateProductResponse = {
+export interface UpdateProductResponse {
     id: string;
-};
+}
 
-export type DeleteProductResponse = {
+export interface DeleteProductResponse {
     id: string;
-};
+}
 
 export const DeleteProductSchema = z.object({
     pathParameters: z.object({

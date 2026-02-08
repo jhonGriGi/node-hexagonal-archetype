@@ -1,6 +1,5 @@
 import type Product from '@domain/model/product';
 import type ProductRepository from '@domain/ports/product-repository';
-import { FIRST_POSITION } from '@domain/constants/constants';
 
 export class InMemoryRepository implements ProductRepository {
     private products: Map<string, Product> = new Map();

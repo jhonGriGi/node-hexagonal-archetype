@@ -1,7 +1,7 @@
-import { PinoLogger, LoggerProxy } from '@libraries/logger';
+import { LoggerProxy, PinoLogger } from '@libraries/logger';
 
-describe('Logger test suite', () => {
-    describe('PinoLogger', () => {
+describe('logger test suite', () => {
+    describe('pinoLogger', () => {
         let logger: PinoLogger;
 
         beforeEach(() => {
@@ -25,7 +25,7 @@ describe('Logger test suite', () => {
         });
     });
 
-    describe('LoggerProxy', () => {
+    describe('loggerProxy', () => {
         let mockLogger: any;
         let proxy: LoggerProxy;
 

@@ -1,6 +1,6 @@
 import LambdaResponseBuilder from '@domain/builders/api-response-builder';
 
-describe('LambdaResponseBuilder test suite', () => {
+describe('lambdaResponseBuilder test suite', () => {
     it('should build response with all properties', () => {
         const response = LambdaResponseBuilder.empty()
             .withStatusCode(200)

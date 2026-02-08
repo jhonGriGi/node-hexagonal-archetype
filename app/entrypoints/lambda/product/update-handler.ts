@@ -1,8 +1,8 @@
 import type { LambdaApiResponse } from '@domain/builders/api-response-builder';
 import type { UpdateProductCommandHandler } from '@domain/command/update-product/command-handler';
-import type { UpdateProductResponse } from '@schemas/products';
 import type { ILogger } from '@libraries/logger';
-import { APIGatewayProxyEvent, Context } from 'aws-lambda';
+import type { UpdateProductResponse } from '@schemas/products';
+import type { APIGatewayProxyEvent, Context } from 'aws-lambda';
 import ApiResponseBuilder from '@domain/builders/api-response-builder';
 import { UpdateProductSchema } from '@schemas/products';
 

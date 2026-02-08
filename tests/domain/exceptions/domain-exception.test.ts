@@ -1,6 +1,6 @@
 import DomainException from '@domain/exceptions/domain-exception';
 
-describe('DomainException test suite', () => {
+describe('domainException test suite', () => {
     it('should create exception with message', () => {
         const exception = new DomainException('Test error');
 

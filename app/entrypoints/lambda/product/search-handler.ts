@@ -1,8 +1,7 @@
 import type { LambdaApiResponse } from '@domain/builders/api-response-builder';
 import type { SearchProductQueryHandler } from '@domain/queries/search-product/query-handler';
-import type { GetProductDTO } from '@schemas/products';
 import type { ILogger } from '@libraries/logger';
-import { APIGatewayProxyEvent, Context } from 'aws-lambda';
+import type { APIGatewayProxyEvent, Context } from 'aws-lambda';
 import ApiResponseBuilder from '@domain/builders/api-response-builder';
 import { getProductSchema } from '@schemas/products';
 

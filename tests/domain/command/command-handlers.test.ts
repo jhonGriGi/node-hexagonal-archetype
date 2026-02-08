@@ -1,8 +1,8 @@
-import { CreateProductCommandHandler } from '@domain/command/create-product/command-handler';
-import { UpdateProductCommandHandler } from '@domain/command/update-product/command-handler';
-import { DeleteProductCommandHandler } from '@domain/command/delete-product/command-handler';
-import { SearchProductQueryHandler } from '@domain/queries/search-product/query-handler';
 import type ProductRepository from '@domain/ports/product-repository';
+import { CreateProductCommandHandler } from '@domain/command/create-product/command-handler';
+import { DeleteProductCommandHandler } from '@domain/command/delete-product/command-handler';
+import { UpdateProductCommandHandler } from '@domain/command/update-product/command-handler';
+import { SearchProductQueryHandler } from '@domain/queries/search-product/query-handler';
 
 const repositoryMock: ProductRepository = {
     add: jest.fn(),
@@ -18,12 +18,12 @@ const repositoryMock: ProductRepository = {
     delete: jest.fn(),
 };
 
-describe('Command Handlers test suite', () => {
+describe('command Handlers test suite', () => {
     beforeEach(() => {
         jest.clearAllMocks();
     });
 
-    describe('CreateProductCommandHandler', () => {
+    describe('createProductCommandHandler', () => {
         it('should handle repository error', async () => {
             const handler = new CreateProductCommandHandler(repositoryMock);
             jest.spyOn(repositoryMock, 'add').mockRejectedValue(new Error('DB error'));
@@ -34,7 +34,7 @@ describe('Command Handlers test suite', () => {
         });
     });
 
-    describe('UpdateProductCommandHandler', () => {
+    describe('updateProductCommandHandler', () => {
         it('should handle repository error', async () => {
             const handler = new UpdateProductCommandHandler(repositoryMock);
             jest.spyOn(repositoryMock, 'updateAttributes').mockRejectedValue(new Error('DB error'));
@@ -45,7 +45,7 @@ describe('Command Handlers test suite', () => {
         });
     });
 
-    describe('DeleteProductCommandHandler', () => {
+    describe('deleteProductCommandHandler', () => {
         it('should handle repository error', async () => {
             const handler = new DeleteProductCommandHandler(repositoryMock);
             jest.spyOn(repositoryMock, 'delete').mockRejectedValue(new Error('DB error'));
@@ -54,7 +54,7 @@ describe('Command Handlers test suite', () => {
         });
     });
 
-    describe('SearchProductQueryHandler', () => {
+    describe('searchProductQueryHandler', () => {
         it('should handle repository error', async () => {
             const handler = new SearchProductQueryHandler(repositoryMock);
             jest.spyOn(repositoryMock, 'get').mockRejectedValue(new Error('DB error'));

@@ -1,7 +1,7 @@
+import type { ILogger } from '@libraries/logger';
 import type { APIGatewayProxyEvent, Context } from 'aws-lambda';
 import { UpdateProductCommandHandler } from '@domain/command/update-product/command-handler';
 import { UpdateProductHandler } from '@lambda/product/update-handler';
-import type { ILogger } from '@libraries/logger';
 import { repositoryMock } from './repository-mock';
 
 const loggerMock: ILogger = {

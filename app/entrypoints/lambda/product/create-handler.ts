@@ -1,12 +1,13 @@
+import type { LambdaApiResponse } from '@domain/builders/api-response-builder';
 import type { CreateProductCommandHandler } from '@domain/command/create-product/command-handler';
 import type { ILogger } from '@libraries/logger';
-import {
-    CreateProductDTO,
+import type {
     CreateProductResponse,
 } from '@schemas/products';
+import type { APIGatewayProxyEvent, Context } from 'aws-lambda';
+import LambdaResponseBuilder from '@domain/builders/api-response-builder';
+
 import { CreateProductSchema } from '@schemas/products';
-import { APIGatewayProxyEvent, Context } from 'aws-lambda';
-import LambdaResponseBuilder, { LambdaApiResponse } from '@domain/builders/api-response-builder';
 
 export class CreateProductHandler {
     constructor(

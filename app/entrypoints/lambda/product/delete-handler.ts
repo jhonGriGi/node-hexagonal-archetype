@@ -1,8 +1,8 @@
 import type { LambdaApiResponse } from '@domain/builders/api-response-builder';
 import type { DeleteProductCommandHandler } from '@domain/command/delete-product/command-handler';
-import type { DeleteProductResponse } from '@schemas/products';
 import type { ILogger } from '@libraries/logger';
-import { APIGatewayProxyEvent, Context } from 'aws-lambda';
+import type { DeleteProductResponse } from '@schemas/products';
+import type { APIGatewayProxyEvent, Context } from 'aws-lambda';
 import ApiResponseBuilder from '@domain/builders/api-response-builder';
 import { DeleteProductSchema } from '@schemas/products';
 
