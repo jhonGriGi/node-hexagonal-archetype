@@ -1,74 +1,42 @@
 #!/bin/bash
-
 set -e
 
-echo "📁 Generating project structure..."
-
-echo "📌 Enter folder for the project (or use current directory with dot '.')"
-read PROJECT_FOLDER
+read -rp "📁 Carpeta del proyecto (usa '.' para la actual): " PROJECT_FOLDER
 PROJECT_FOLDER=${PROJECT_FOLDER:-.}
 
-if [ "$PROJECT_FOLDER" != "." ]; then
-  echo "📂 Creating project folder..."
-  mkdir -p "$PROJECT_FOLDER" || { echo "❌ Error creating folder"; exit 1; }
-fi
+[ "$PROJECT_FOLDER" != "." ] && mkdir -p "$PROJECT_FOLDER"
+cd "$PROJECT_FOLDER" || exit 1
 
-cd "$PROJECT_FOLDER" || { echo "❌ Folder not found"; exit 1; }
+read -rp "📝 Nombre del proyecto: " PROJECT_NAME
+[ -z "$PROJECT_NAME" ] && echo "❌ Nombre requerido" && exit 1
 
-echo "📝 Enter your project name:"
-read PROJECT_NAME
-
-if [ -z "$PROJECT_NAME" ]; then
-  echo "❌ Project name not specified"
-  exit 1
-fi
-
-echo "🔧 Choose a package manager [npm, pnpm, yarn]"
-
-options=("npm" "yarn" "pnpm")
-select opt in "${options[@]}"
-do
-  case $opt in
-    "npm")
-      echo "📦 Initializing project with npm..."
-      npm init -y
-      npm pkg set name="$PROJECT_NAME"
-      PACKAGE_MANAGER="npm"
+echo "🔧 Package manager [npm/yarn/pnpm]"
+select PM in npm yarn pnpm; do
+  case $PM in
+    npm)
+      npm init -y && npm pkg set name="$PROJECT_NAME"
       break
       ;;
-    "yarn")
-      echo "📦 Initializing project with yarn..."
+    yarn)
       yarn init -y
-      PACKAGE_MANAGER="yarn"
       break
       ;;
-    "pnpm")
-      echo "📦 Initializing project with pnpm..."
-      pnpm init
-      pnpm pkg set name="$PROJECT_NAME"
-      PACKAGE_MANAGER="pnpm"
+    pnpm)
+      pnpm init && pnpm pkg set name="$PROJECT_NAME"
       break
-      ;;
-    *)
-      echo "❗ Invalid option: $REPLY"
       ;;
   esac
 done
 
-echo "📥 Installing development dependencies..."
-INSTALL_DEPENDENCIES="esbuild loggerfy safe-json-stringify uuid zod"
-INSTALL_DEV_DEPENDENCIES="ts-node typescript jest ts-jest @jest/globals @types/jest @types/node eslint eslint-plugin-format @antfu/eslint-config"
+echo "📥 Instalando dependencias..."
+DEPS="pino safe-json-stringify uuid zod"
+DEV_DEPS="ts-node typescript jest ts-jest @jest/globals @types/jest @types/node eslint eslint-plugin-format @antfu/eslint-config @types/aws-lambda aws-lambda"
 
-if [ "$PACKAGE_MANAGER" = "npm" ]; then
-  npm install --save --save-exact $INSTALL_DEPENDENCIES
-  npm install --save-dev --save-exact $INSTALL_DEV_DEPENDENCIES
-elif [ "$PACKAGE_MANAGER" = "pnpm" ]; then
-  pnpm add $INSTALL_DEPENDENCIES
-  pnpm add -D $INSTALL_DEV_DEPENDENCIES
-elif [ "$PACKAGE_MANAGER" = "yarn" ]; then
-  yarn add $INSTALL_DEPENDENCIES
-  yarn add -D $INSTALL_DEV_DEPENDENCIES
-fi
+case $PM in
+  npm) npm i $DEPS && npm i -D $DEV_DEPS ;;
+  pnpm) pnpm add $DEPS && pnpm add -D $DEV_DEPS ;;
+  yarn) yarn add $DEPS && yarn add -D $DEV_DEPS ;;
+esac
 
 echo "🛠️ Generating configuration files..."
 
